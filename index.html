@@ -597,10 +597,10 @@
 
     <h3>2-1. ファイル配置</h3>
     <ol>
-      <li>Google Driveから <code>RiskRewardSLTPMaster_v7.00_Trial.ex5</code> をダウンロード</li>
+      <li>Google Driveから <code>RiskRewardSLTPMaster_v7_Trial.ex5</code> をダウンロード</li>
       <li>MT5を起動し、<code>ファイル → データフォルダを開く</code> をクリック</li>
       <li><code>MQL5/Experts</code> フォルダを開く</li>
-      <li>ダウンロードした <code>RiskRewardSLTPMaster_v7.00_Trial.ex5</code> をこのフォルダにコピー</li>
+      <li>ダウンロードした <code>RiskRewardSLTPMaster_v7_Trial.ex5</code> をこのフォルダにコピー</li>
       <li>MT5を再起動してEAリストを更新（または、ナビゲーターで右クリック→更新）</li>
     </ol>
 
@@ -621,10 +621,10 @@
     <h3>2-3. 初回起動確認</h3>
     <pre>
 // エキスパートログに以下が表示されればOK
-=== EA v7.00 Trial Version ===
+=== EA v7.00 Trial Version (GlobalVariable Persistent) ===
 Trial version - Risk: 1% fixed, Manual Lot: 0.01 fixed
 Valid until: 2026/03/31
-Daily trade limit: 3 trades per day
+Daily trade limit: 3 trades per day (Persistent via GlobalVariable)
     </pre>
 
     <div class="note">
@@ -989,12 +989,14 @@ Daily trade limit: 3 trades per day
     <pre>
 // 3回目のトレード実行時
 [Market Execute] Success. Lot=0.10 (Trades today: 3/3)
+[Trial] Auto SL/TP and Lot adjustment disabled - Daily limit reached
+[Trial] All buttons disabled - Daily limit reached
 
 // 4回目のトレード実行を試みた場合
-[Trial] Daily trade limit reached: 3/3
 Alert: "Daily trade limit reached (3/3 trades)"
 
 // 翌日の初回トレード時
+[Trial] New day - reset trade count
 [Market Execute] Success. Lot=0.10 (Trades today: 1/3)
     </pre>
 
@@ -1002,15 +1004,17 @@ Alert: "Daily trade limit reached (3/3 trades)"
       <strong>日次制限の仕組み：</strong>
       MT5を再起動しても、同じ日であればトレード回数は保持されます。
       翌日（サーバー時間で日付が変わると）自動的にリセットされ、また3回までトレードできるようになります。
+      制限に達すると、全てのボタンがグレーアウトし、自動SL/TP設定も無効化されます。
     </div>
 
     <h3>5-3. Trial版での注意事項</h3>
     <ul>
-      <li>✅ 1日3回の制限はNew York時間（サーバー時間）の日付変更でリセットされます</li>
-      <li>✅ 指値注文が約定した場合もカウントに含まれます</li>
+      <li>✅ 1日3回の制限はサーバー時間の日付変更でリセットされます</li>
+      <li>✅ 指値注文が約定した場合もカウントに含まれます（OnTradeTransactionで検出）</li>
       <li>✅ EAボタン経由でない手動発注はカウントに含まれません</li>
       <li>✅ ポジションの部分決済や全決済はカウントに含まれません</li>
-      <li>✅ 制限に達しても、既存ポジションのSL/TP管理は継続されます</li>
+      <li>✅ 制限に達すると、既存ポジションへの新規SL/TP自動設定も停止します</li>
+      <li>✅ 制限に達すると、全ボタンがグレーアウトし、クリックできなくなります</li>
     </ul>
   </div>
 
@@ -1023,6 +1027,7 @@ Alert: "Daily trade limit reached (3/3 trades)"
     <h4>管理フロー：</h4>
     <ol>
       <li><strong>検出</strong>：OnTradeTransaction または OnTimer で新規注文を検出</li>
+      <li><strong>日次制限チェック</strong>：3回/日の制限に達していないか確認（達している場合は処理スキップ）</li>
       <li><strong>条件確認</strong>：シンボルとMagicNumberが管理対象か判定</li>
       <li><strong>SL/TP設定</strong>：
         <ul>
@@ -1038,12 +1043,18 @@ Alert: "Daily trade limit reached (3/3 trades)"
       </li>
     </ol>
 
+    <div class="note">
+      <strong>日次制限と指値注文：</strong>
+      指値注文の約定時にトレードカウントが増加します。
+      カウントが3/3に達すると、それ以降の新規注文へのSL/TP自動設定は停止します。
+    </div>
+
     <h3>6-2. 既存ポジションの管理</h3>
     <p>指値注文が約定してポジションになった場合、または手動で成行注文した場合も自動管理されます。</p>
 
     <h4>管理対象：</h4>
     <ul>
-      <li><strong>SL/TP未設定のポジション</strong>：エントリー価格から適切なSL/TPを計算して設定</li>
+      <li><strong>SL/TP未設定のポジション</strong>：エントリー価格から適切なSL/TPを計算して設定（日次制限内の場合のみ）</li>
       <li><strong>TPがRR通りでないポジション</strong>：
         <ul>
           <li>現在のSL距離からRRに基づいた正しいTPを再計算</li>
@@ -1064,24 +1075,24 @@ Alert: "Daily trade limit reached (3/3 trades)"
 
     <h3>6-3. 実際の運用例</h3>
     <pre>
-// シナリオ1：指値注文を手動発注
+// シナリオ1：指値注文を手動発注（日次制限内）
 1. チャートで指値価格を決める
 2. MT5標準機能で BUY LIMIT を発注（SL/TP未設定）
 3. EAが検出して自動的にSL/TPを設定
 4. 自動リスクONの場合、ロットも最適化
 5. 約定後、トレードカウントが1増える
 
-// シナリオ2：EAのBUYボタン経由で成行発注
+// シナリオ2：指値注文を手動発注（日次制限到達後）
+1. チャートで指値価格を決める
+2. MT5標準機能で BUY LIMIT を発注（SL/TP未設定）
+3. EAが検出するが、日次制限のため処理スキップ
+4. SL/TPは自動設定されない（手動設定が必要）
+
+// シナリオ3：EAのBUYボタン経由で成行発注
 1. BUYボタン → EXEボタンで成行発注
 2. 発注時点で最適なSL/TP/ロットが設定済み
 3. トレードカウントが1増える
 4. 以後はそのままキープ（RR維持）
-
-// シナリオ3：手動で成行発注
-1. MT5標準機能で成行注文（SL/TP未設定）
-2. EAが検出して自動的にSL/TPを設定
-3. RRに基づいたTPを計算して反映
-4. トレードカウントは増えない（EA経由ではないため）
     </pre>
   </div>
 
@@ -1243,6 +1254,7 @@ Position #12347 (BUY EURUSD 0.20)
 
 09:00 - EURUSD BUY 0.20ロットでエントリー
         Entry: 1.10000, SL: 1.09700, TP: 1.10450
+        Trades today: 1/3
 
 10:30 - 含み益+50pips到達
         → BEボタンをクリック
@@ -1258,6 +1270,7 @@ Position #12347 (BUY EURUSD 0.20)
         → 残り0.10ロットを全決済（+120pips × 0.10 = +12pips利益確定）
 
 結果：トータル +27pips の利益確保に成功
+      Trades today: 1/3（部分決済・全決済はカウントされない）
     </pre>
   </div>
 
@@ -1370,7 +1383,7 @@ TP = Entry - TP距離 = Bid - (実リスク距離 × RiskRewardRatio)
   <div class="section" id="examples">
     <h2>9. 実践的な運用例 // PRACTICAL EXAMPLES</h2>
 
-    <h3>10-1. 推奨設定例</h3>
+    <h3>9-1. 推奨設定例</h3>
 
     <h4>A. FXデイトレード（EURUSD、USDJPY等）</h4>
     <table>
@@ -1402,7 +1415,7 @@ TP = Entry - TP距離 = Bid - (実リスク距離 × RiskRewardRatio)
       <tr><td>AllowBetterRR</td><td>true</td></tr>
     </table>
 
-    <h3>10-2. 実践シナリオ：EURUSDデイトレード</h3>
+    <h3>9-2. 実践シナリオ：EURUSDデイトレード</h3>
     <pre>
 【設定】
 口座残高：1,000,000円（JPY口座）
@@ -1450,7 +1463,7 @@ AllowBetterRR：true
 - 実質リスクリワード：24,000円 / 10,000円 = 2.4
     </pre>
 
-    <h3>10-3. ベストプラクティス</h3>
+    <h3>9-3. ベストプラクティス</h3>
 
     <h4>✅ DO（推奨）：</h4>
     <ul>
@@ -1476,7 +1489,7 @@ AllowBetterRR：true
   <div class="section" id="troubleshooting">
     <h2>10. トラブルシューティング // TROUBLESHOOTING</h2>
 
-    <h3>11-1. エントリー関連</h3>
+    <h3>10-1. エントリー関連</h3>
 
     <h4>Q1. EXEボタンを押してもエラーになる</h4>
     <p><strong>A:</strong> 以下を確認してください：</p>
@@ -1485,6 +1498,7 @@ AllowBetterRR：true
       <li>自動売買が有効になっているか？（ツール→オプション→エキスパートアドバイザ）</li>
       <li>日次トレード制限（3回）に達していないか？（パネルで確認）</li>
       <li>ログに <code>[Trial] Daily trade limit reached</code> と表示されていないか？</li>
+      <li>ボタンがグレーアウトしていないか？（制限到達時は自動的にグレーアウト）</li>
     </ul>
 
     <h4>Q2. ロットが想定より小さい/大きい</h4>
@@ -1502,9 +1516,10 @@ AllowBetterRR：true
       <strong>日次制限について：</strong>
       MT5を再起動しても、同じ日であればトレード回数は保持されます。
       これにより、過剰なトレードを防ぎ、リスク管理を徹底できます。
+      制限に達すると、全ボタンがグレーアウトし、新規エントリーができなくなります。
     </div>
 
-    <h3>11-2. ポジション管理関連</h3>
+    <h3>10-2. ポジション管理関連</h3>
 
     <h4>Q4. BEボタンを押してもSLが移動しない</h4>
     <p><strong>A:</strong> 以下の条件を満たしているか確認してください：</p>
@@ -1523,13 +1538,14 @@ AllowBetterRR：true
       <li>ログに <code>[Half Close] Position #xxxxx skipped. Lot too small</code> と表示されているか確認</li>
     </ul>
 
-    <h3>11-3. 指値注文関連</h3>
+    <h3>10-3. 指値注文関連</h3>
 
     <h4>Q6. 指値注文のSL/TPが自動設定されない</h4>
     <p><strong>A:</strong> 以下を確認してください：</p>
     <ul>
       <li>注文のシンボルがEAを設置したチャートと同じか？</li>
       <li>MagicNumberが条件に合っているか？（MagicNumber=0なら、注文もMagic=0が必要）</li>
+      <li>日次トレード制限（3回）に達していないか？（達している場合は自動設定されない）</li>
       <li>EnableOnTradeTransactionがfalseの場合、TimerInterval（300ms）ごとの監視になるため遅延が発生</li>
       <li>ログに <code>Order xxxxx: Initial SL/TP set</code> と表示されているか？</li>
     </ul>
@@ -1543,7 +1559,7 @@ AllowBetterRR：true
       <li>ログに <code>Replaced order xxxxx -> yyyyy</code> と表示される</li>
     </ol>
 
-    <h3>11-4. 表示関連</h3>
+    <h3>10-4. 表示関連</h3>
 
     <h4>Q8. ラベルが表示されない</h4>
     <p><strong>A:</strong> 以下を確認してください：</p>
@@ -1562,7 +1578,7 @@ AllowBetterRR：true
       <li>falseの場合は意図的な動作です</li>
     </ul>
 
-    <h3>11-5. ログメッセージ例</h3>
+    <h3>10-5. ログメッセージ例</h3>
     <pre>
 // 正常動作時
 === EA v7.00 Trial Version (GlobalVariable Persistent) ===
@@ -1574,15 +1590,19 @@ Daily trade limit: 3 trades per day (Persistent via GlobalVariable)
 Order 123456: Initial SL/TP set
 [Breakeven] Position #12345 moved. New SL=1.10002
 
+// 日次制限到達時
+[Market Execute] Success. Lot=0.10 (Trades today: 3/3)
+[Trial] Auto SL/TP and Lot adjustment disabled - Daily limit reached
+[Trial] All buttons disabled - Daily limit reached
+Alert: "Daily trade limit reached (3/3 trades)"
+
 // エラー時
 [Market Execute] ERROR: No lines displayed.
-[Trial] Daily trade limit reached: 3/3
-Alert: "Daily trade limit reached (3/3 trades)"
 [Breakeven] No positions eligible
 [Half Close] Position #12345 skipped. Lot too small (0.01)
     </pre>
 
-    <h3>11-6. よくある質問</h3>
+    <h3>10-6. よくある質問</h3>
 
     <h4>Q10. Trial版の期限が切れたらどうなる？</h4>
     <p><strong>A:</strong> 2026年3月31日を過ぎると：</p>
@@ -1591,6 +1611,15 @@ Alert: "Daily trade limit reached (3/3 trades)"
       <li>Alert が表示され、EAが自動的に停止</li>
       <li>新規トレードは実行できなくなる</li>
       <li>既存ポジションのSL/TP管理も停止</li>
+    </ul>
+
+    <h4>Q11. 日次制限に達した後、既存ポジションはどうなる？</h4>
+    <p><strong>A:</strong> 既存ポジションへの影響：</p>
+    <ul>
+      <li>既に設定済みのSL/TPはそのまま維持される</li>
+      <li>新たにSL/TPを自動設定することはできない</li>
+      <li>BE/50%/CLボタンは使用できなくなる（グレーアウト）</li>
+      <li>手動でのポジション管理は可能</li>
     </ul>
   </div>
 
@@ -1634,9 +1663,9 @@ Alert: "Daily trade limit reached (3/3 trades)"
       ✅ 全て自己責任であることを理解した
     </div>
 
-    <h3>12-1. インストール後の初回起動手順</h3>
+    <h3>11-1. インストール後の初回起動手順</h3>
     <ol>
-      <li>ダウンロードした <code>RiskRewardSLTPMaster_v7.00_Trial.ex5</code> を <code>MQL5/Experts</code> フォルダにコピー</li>
+      <li>ダウンロードした <code>RiskRewardSLTPMaster_v7_Trial.ex5</code> を <code>MQL5/Experts</code> フォルダにコピー</li>
       <li>MT5を再起動してEAリストを更新</li>
       <li>デモ口座で最も取引量の多い銘柄（EURUSD等）のチャートに適用</li>
       <li>パラメータは初期値のまま「OK」をクリック</li>
