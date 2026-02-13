@@ -1,0 +1,1671 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>RiskRewardSLTPMaster_v7.00 完全マニュアル</title>
+  <style>
+    :root {
+      --bg-main: #05060b;
+      --bg-panel: rgba(5, 10, 25, 0.95);
+      --accent-cyan: #00f6ff;
+      --accent-pink: #ff2ef5;
+      --accent-purple: #a020f0;
+      --accent-yellow: #ffe066;
+      --accent-orange: #ff8c42;
+      --text-main: #e5f7ff;
+      --text-muted: #7f92b3;
+      --border-soft: rgba(0, 255, 255, 0.18);
+      --shadow-neon: 0 0 12px rgba(0, 255, 255, 0.5);
+      --shadow-pink: 0 0 16px rgba(255, 46, 245, 0.55);
+      --mono: "Fira Code", "SF Mono", "Consolas", monospace;
+      --sans: "Segoe UI", "Hiragino Kaku Gothic ProN", "Meiryo", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      padding: 32px 24px 80px;
+      font-family: var(--sans);
+      line-height: 1.8;
+      color: var(--text-main);
+      background:
+        radial-gradient(circle at 10% 0%, rgba(0, 255, 255, 0.08), transparent 55%),
+        radial-gradient(circle at 90% 100%, rgba(255, 46, 245, 0.08), transparent 60%),
+        radial-gradient(circle at 0% 100%, rgba(160, 32, 240, 0.12), transparent 55%),
+        linear-gradient(145deg, #020308 0%, #05060b 45%, #040312 100%);
+      background-attachment: fixed;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      background-size: 100% 2px, 3px 100%;
+      mix-blend-mode: soft-light;
+      opacity: 0.45;
+      z-index: -1;
+    }
+
+    h1, h2, h3 {
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      position: relative;
+    }
+
+    h1 {
+      font-size: 2.1rem;
+      margin: 0 0 24px;
+      color: var(--accent-cyan);
+      text-shadow: var(--shadow-neon);
+    }
+
+    h1::after {
+      content: " // v7.00 TRIAL";
+      font-size: 0.72rem;
+      color: var(--accent-pink);
+      margin-left: 8px;
+      opacity: 0.85;
+    }
+
+    h2 {
+      font-size: 1.35rem;
+      margin: 32px 0 12px;
+      color: var(--accent-yellow);
+      border-bottom: 1px solid rgba(0, 246, 255, 0.3);
+      padding-bottom: 4px;
+    }
+
+    h3 {
+      font-size: 1.08rem;
+      margin: 20px 0 8px;
+      color: var(--accent-cyan);
+    }
+
+    h4 {
+      font-size: 0.95rem;
+      margin: 16px 0 6px;
+      color: var(--accent-orange);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    p {
+      margin: 8px 0;
+      color: var(--text-main);
+    }
+
+    a {
+      color: var(--accent-cyan);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    code {
+      font-family: var(--mono);
+      font-size: 0.9rem;
+      background: rgba(4, 20, 45, 0.9);
+      color: var(--accent-yellow);
+      padding: 2px 6px;
+      border-radius: 4px;
+      border: 1px solid rgba(0, 246, 255, 0.22);
+      box-shadow: 0 0 6px rgba(0, 246, 255, 0.35);
+    }
+
+    pre {
+      font-family: var(--mono);
+      font-size: 0.88rem;
+      background: radial-gradient(circle at 0 0, rgba(0, 246, 255, 0.16), transparent 60%),
+                  rgba(1, 8, 20, 0.92);
+      padding: 12px 14px;
+      border-radius: 8px;
+      border: 1px solid var(--border-soft);
+      box-shadow: var(--shadow-neon);
+      overflow-x: auto;
+      position: relative;
+      line-height: 1.6;
+    }
+
+    pre::before {
+      content: "TERMINAL";
+      position: absolute;
+      top: 4px;
+      right: 12px;
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      color: var(--text-muted);
+    }
+
+    .frame {
+      max-width: 1100px;
+      margin: 0 auto;
+      background: linear-gradient(145deg,
+              rgba(1, 10, 25, 0.96),
+              rgba(3, 6, 18, 0.98));
+      border-radius: 18px;
+      border: 1px solid rgba(0, 246, 255, 0.35);
+      box-shadow:
+        0 0 0 1px rgba(255, 46, 245, 0.24),
+        0 0 48px rgba(0, 246, 255, 0.35),
+        0 0 96px rgba(160, 32, 240, 0.35);
+      padding: 22px 22px 30px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .frame::before,
+    .frame::after {
+      content: "";
+      position: absolute;
+      width: 180px;
+      height: 180px;
+      background: radial-gradient(circle, rgba(0, 246, 255, 0.28), transparent 60%);
+      filter: blur(4px);
+      opacity: 0.18;
+      pointer-events: none;
+    }
+
+    .frame::before {
+      top: -70px;
+      left: -40px;
+    }
+
+    .frame::after {
+      bottom: -90px;
+      right: -40px;
+      background: radial-gradient(circle, rgba(255, 46, 245, 0.3), transparent 60%);
+    }
+
+    .section {
+      margin-bottom: 32px;
+      padding: 14px 14px 18px;
+      background: radial-gradient(circle at 0 0, rgba(0, 246, 255, 0.12), transparent 55%),
+                  radial-gradient(circle at 100% 100%, rgba(255, 46, 245, 0.08), transparent 55%),
+                  rgba(2, 8, 22, 0.98);
+      border-radius: 12px;
+      border: 1px solid rgba(0, 246, 255, 0.2);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .section::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg,
+        transparent 0,
+        rgba(0, 246, 255, 0.22) 50%,
+        transparent 100%);
+      mix-blend-mode: soft-light;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.35s ease-out;
+    }
+
+    .section:hover::before {
+      opacity: 0.7;
+    }
+
+    .note {
+      border-left: 3px solid var(--accent-pink);
+      background: linear-gradient(135deg,
+                  rgba(255, 46, 245, 0.08),
+                  rgba(0, 246, 255, 0.04));
+      padding: 8px 12px;
+      margin: 12px 0;
+      font-size: 0.9rem;
+      color: var(--accent-yellow);
+      box-shadow: 0 0 10px rgba(255, 46, 245, 0.35);
+    }
+
+    .note strong {
+      color: var(--accent-pink);
+    }
+
+    .highlight-box {
+      border: 2px solid var(--accent-orange);
+      background: linear-gradient(135deg,
+                  rgba(255, 140, 66, 0.12),
+                  rgba(255, 46, 245, 0.06));
+      padding: 10px 14px;
+      margin: 14px 0;
+      border-radius: 8px;
+      box-shadow: 0 0 14px rgba(255, 140, 66, 0.4);
+    }
+
+    .highlight-box strong {
+      color: var(--accent-orange);
+      font-size: 1.05em;
+    }
+
+    ul, ol {
+      margin: 6px 0 6px 1.4em;
+    }
+
+    li {
+      margin: 4px 0;
+      color: var(--text-main);
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin: 8px 0 12px;
+      background: rgba(4, 12, 30, 0.96);
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 0 22px rgba(0, 246, 255, 0.25);
+    }
+
+    th, td {
+      border: 1px solid rgba(0, 246, 255, 0.3);
+      padding: 6px 8px;
+      font-size: 0.9rem;
+      vertical-align: top;
+    }
+
+    th {
+      background: linear-gradient(135deg,
+                  rgba(0, 246, 255, 0.4),
+                  rgba(160, 32, 240, 0.7));
+      color: #02101c;
+      text-align: left;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-size: 0.78rem;
+    }
+
+    td {
+      color: var(--text-main);
+    }
+
+    .tagline {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin: 2px 0 14px;
+    }
+
+    .chip {
+      font-size: 0.75rem;
+      padding: 3px 7px;
+      border-radius: 999px;
+      border: 1px solid rgba(0, 246, 255, 0.5);
+      color: var(--accent-cyan);
+      background: rgba(0, 10, 25, 0.9);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+
+    .chip.pink {
+      border-color: rgba(255, 46, 245, 0.65);
+      color: var(--accent-pink);
+    }
+
+    .chip.yellow {
+      border-color: rgba(255, 224, 102, 0.8);
+      color: var(--accent-yellow);
+    }
+
+    .chip.orange {
+      border-color: rgba(255, 140, 66, 0.8);
+      color: var(--accent-orange);
+    }
+
+    .chip.purple {
+      border-color: rgba(160, 32, 240, 0.8);
+      color: var(--accent-purple);
+    }
+
+    .toc {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 10px;
+      margin: 10px 0 4px;
+    }
+
+    .toc-item {
+      padding: 8px 10px;
+      border-radius: 10px;
+      border: 1px solid rgba(0, 246, 255, 0.25);
+      background: radial-gradient(circle at 0 0, rgba(0, 246, 255, 0.18), transparent 60%),
+                  rgba(2, 8, 22, 0.98);
+      font-size: 0.86rem;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.16s ease-out, box-shadow 0.16s ease-out, border-color 0.16s ease-out;
+    }
+
+    .toc-item::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(120deg,
+        rgba(255, 46, 245, 0.0) 0,
+        rgba(255, 46, 245, 0.35) 50%,
+        rgba(255, 224, 102, 0.0) 100%);
+      mix-blend-mode: soft-light;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.22s ease-out;
+    }
+
+    .toc-item:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 0 16px rgba(0, 246, 255, 0.45);
+      border-color: rgba(255, 46, 245, 0.8);
+    }
+
+    .toc-item:hover::before {
+      opacity: 1;
+    }
+
+    .toc-item span {
+      display: block;
+    }
+
+    .toc-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--text-muted);
+      margin-bottom: 2px;
+    }
+
+    .toc-title {
+      color: var(--accent-cyan);
+    }
+
+    .version-badge {
+      display: inline-block;
+      padding: 4px 10px;
+      background: linear-gradient(135deg, rgba(255, 46, 245, 0.3), rgba(160, 32, 240, 0.3));
+      border: 1px solid var(--accent-pink);
+      border-radius: 6px;
+      font-size: 0.85rem;
+      color: var(--accent-pink);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      box-shadow: 0 0 10px rgba(255, 46, 245, 0.4);
+      margin-left: 8px;
+    }
+
+    .trial-warning {
+      border: 2px solid var(--accent-pink);
+      background: linear-gradient(135deg,
+                  rgba(255, 46, 245, 0.15),
+                  rgba(255, 140, 66, 0.1));
+      padding: 12px 16px;
+      margin: 14px 0;
+      border-radius: 8px;
+      box-shadow: 0 0 20px rgba(255, 46, 245, 0.5);
+    }
+
+    .trial-warning strong {
+      color: var(--accent-pink);
+      font-size: 1.1em;
+    }
+
+    .footer {
+      margin-top: 14px;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-align: right;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    @media (max-width: 768px) {
+      body {
+        padding: 16px 10px 60px;
+      }
+      .frame {
+        padding: 18px 14px 24px;
+      }
+      h1 {
+        font-size: 1.6rem;
+      }
+      h1::after {
+        display: block;
+        margin: 8px 0 0 0;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="frame">
+  <div class="tagline">TRIAL VERSION RISK MANAGEMENT SYSTEM</div>
+  <h1>RiskRewardSLTPMaster <span class="version-badge">v7.00 Trial</span></h1>
+
+  <div class="chip-row">
+    <div class="chip">Spread-Adjusted RR</div>
+    <div class="chip pink">Daily Trade Limit</div>
+    <div class="chip yellow">Auto Breakeven</div>
+    <div class="chip orange">Position Management</div>
+    <div class="chip purple">Trial Edition</div>
+  </div>
+
+  <div class="trial-warning">
+    <strong>⚠️ TRIAL VERSION NOTICE</strong>
+    <p style="margin: 8px 0 0;">
+      本バージョンはトライアル版です。<strong>リスク1%固定・手動ロット0.01固定</strong>で動作します。
+      <strong>1日3回まで</strong>のトレード制限があり、<strong>2026年3月31日まで</strong>使用可能です。
+      全機能を試用できますが、設定の一部は変更できません。
+    </p>
+  </div>
+
+  <div class="section" id="toc">
+    <h2>0. 目次 // INDEX</h2>
+    <div class="toc">
+      <div class="toc-item" onclick="location.hash='#overview'">
+        <span class="toc-label">SECTION 1</span>
+        <span class="toc-title">EA概要とTrial版制限</span>
+      </div>
+      <div class="toc-item" onclick="location.hash='#install'">
+        <span class="toc-label">SECTION 2</span>
+        <span class="toc-title">インストール手順</span>
+      </div>
+      <div class="toc-item" onclick="location.hash='#params'">
+        <span class="toc-label">SECTION 3</span>
+        <span class="toc-title">パラメータ完全ガイド</span>
+      </div>
+      <div class="toc-item" onclick="location.hash='#ui'">
+        <span class="toc-label">SECTION 4</span>
+        <span class="toc-title">UI構成と新ボタン解説</span>
+      </div>
+      <div class="toc-item" onclick="location.hash='#market'">
+        <span class="toc-label">SECTION 5</span>
+        <span class="toc-title">成行エントリー完全フロー</span>
+      </div>
+      <div class="toc-item" onclick="location.hash='#pending'">
+        <span class="toc-label">SECTION 6</span>
+        <span class="toc-title">指値注文とポジション管理</span>
+      </div>
+      <div class="toc-item" onclick="location.hash='#position-control'">
+        <span class="toc-label">SECTION 7</span>
+        <span class="toc-title">ポジション制御機能（NEW）</span>
+      </div>
+      <div class="toc-item" onclick="location.hash='#spread'">
+        <span class="toc-label">SECTION 8</span>
+        <span class="toc-title">スプレッド込みRR計算</span>
+      </div>
+      <div class="toc-item" onclick="location.hash='#examples'">
+        <span class="toc-label">SECTION 9</span>
+        <span class="toc-title">実践的な運用例</span>
+      </div>
+      <div class="toc-item" onclick="location.hash='#troubleshooting'">
+        <span class="toc-label">SECTION 10</span>
+        <span class="toc-title">トラブルシューティング</span>
+      </div>
+      <div class="toc-item" onclick="location.hash='#download'" style="border-color: var(--accent-pink); background: radial-gradient(circle at 0 0, rgba(255, 46, 245, 0.25), transparent 60%), rgba(2, 8, 22, 0.98);">
+        <span class="toc-label">SECTION 11</span>
+        <span class="toc-title" style="color: var(--accent-pink);">📥 ダウンロード</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" id="overview">
+    <h2>1. EA概要とTrial版制限 // OVERVIEW</h2>
+    
+    <h3>1-1. 基本コンセプト</h3>
+    <p>
+      <code>RiskRewardSLTPMaster v7.00 Trial</code> は、トレーダーが設定したリスク管理ルールを自動実行する次世代型リスク管理EAのトライアル版です。
+      口座残高、ストップロス距離、リスクリワード比率から最適なロットサイズとSL/TP価格を自動計算し、成行・指値の両方に対応します。
+    </p>
+
+    <h3>1-2. v7.00の新機能</h3>
+    <ul>
+      <li><strong>ブレークイーブン自動移動（BE）</strong>：含み益のあるポジションのSLをエントリー価格＋スプレッドに自動移動</li>
+      <li><strong>ハーフクローズ（50%）</strong>：全ポジションの50%を部分決済して利益確保</li>
+      <li><strong>全決済（CL）</strong>：現在のシンボルの全ポジションを一括決済</li>
+      <li><strong>RR改善時のTP修正制御</strong>：<code>AllowBetterRR</code>パラメータで、RRが改善されたポジションのTP修正を許可/禁止</li>
+      <li><strong>情報パネル表示切替</strong>：<code>ShowInfoPanel</code>でパネル表示をON/OFF可能</li>
+      <li><strong>日次トレード制限</strong>：GlobalVariableによる永続化で、MT5再起動後も制限カウントを保持</li>
+    </ul>
+
+    <h3>1-3. Trial版の制限事項</h3>
+    <table>
+      <tr><th>制限項目</th><th>Trial版の仕様</th></tr>
+      <tr>
+        <td>リスク％</td>
+        <td>1%固定（変更不可）</td>
+      </tr>
+      <tr>
+        <td>手動ロット</td>
+        <td>0.01固定（変更不可）</td>
+      </tr>
+      <tr>
+        <td>日次トレード回数</td>
+        <td>1日3回まで</td>
+      </tr>
+      <tr>
+        <td>使用期限</td>
+        <td>2026年3月31日まで</td>
+      </tr>
+      <tr>
+        <td>機能制限</td>
+        <td>なし（全機能使用可能）</td>
+      </tr>
+    </table>
+
+    <div class="note">
+      <strong>重要：</strong>
+      Trial版では<code>EnableAutoRiskPercent</code>パラメータの設定に関わらず、自動リスクON時は1%固定、OFF時は0.01ロット固定で動作します。
+      これにより、デモ口座で安全にEAの挙動を確認できます。
+    </div>
+
+    <h3>1-4. v5.00からの主な変更点</h3>
+    <ul>
+      <li>✅ Trial版として再設計（期限管理・トレード回数制限）</li>
+      <li>✅ ポジション制御ボタン3つ追加（BE/50%/CL）</li>
+      <li>✅ ボタンレイアウトを2段構成に変更（視認性向上）</li>
+      <li>✅ GlobalVariableによるトレード回数の永続化</li>
+      <li>✅ AllowBetterRRパラメータ追加（TP修正制御）</li>
+      <li>✅ 情報パネル表示ON/OFF機能</li>
+      <li>✅ ラベル表示の改善（チャート右端に固定表示）</li>
+    </ul>
+
+    <div class="highlight-box">
+      <strong>🎯 想定ユーザー</strong><br>
+      「EAを初めて使う」「リスク管理を自動化したい」「裁量トレードの補助ツールが欲しい」方向けです。
+      デモ口座で十分に動作確認してから、実運用に進んでください。
+    </div>
+  </div>
+
+  <div class="section" id="install">
+    <h2>2. インストール手順 // INSTALLATION</h2>
+
+    <h3>2-1. ファイル配置</h3>
+    <ol>
+      <li>Google Driveから <code>RiskRewardSLTPMaster_v7.00_Trial.ex5</code> をダウンロード</li>
+      <li>MT5を起動し、<code>ファイル → データフォルダを開く</code> をクリック</li>
+      <li><code>MQL5/Experts</code> フォルダを開く</li>
+      <li>ダウンロードした <code>RiskRewardSLTPMaster_v7.00_Trial.ex5</code> をこのフォルダにコピー</li>
+      <li>MT5を再起動してEAリストを更新（または、ナビゲーターで右クリック→更新）</li>
+    </ol>
+
+    <h3>2-2. チャートへの適用</h3>
+    <ol>
+      <li>ナビゲーター → エキスパートアドバイザ から本EAを選択</li>
+      <li>トレードしたいシンボルのチャート（例：EURUSD、XAUUSD）にドラッグ＆ドロップ</li>
+      <li>設定画面で以下を確認：
+        <ul>
+          <li>✅ <strong>自動売買を許可する</strong> にチェック</li>
+          <li>✅ <strong>アルゴリズム取引</strong> を有効化</li>
+        </ul>
+      </li>
+      <li>パラメータを調整（基本的にはデフォルトでOK）</li>
+      <li>「OK」で起動</li>
+    </ol>
+
+    <h3>2-3. 初回起動確認</h3>
+    <pre>
+// エキスパートログに以下が表示されればOK
+=== EA v7.00 Trial Version ===
+Trial version - Risk: 1% fixed, Manual Lot: 0.01 fixed
+Valid until: 2026/03/31
+Daily trade limit: 3 trades per day
+    </pre>
+
+    <div class="note">
+      <strong>初回起動時の動作：</strong>
+      初回起動時、EAはトレード回数を記録するための準備を行います。
+      MT5を再起動しても、同じ日であればトレード回数が保持されます。
+    </div>
+
+    <h3>2-4. 動作確認手順</h3>
+    <ol>
+      <li>チャート右下に情報パネルとボタンが表示されることを確認</li>
+      <li>パネルに <code>Today: 0/3 trades</code> と表示されることを確認</li>
+      <li><code>BUY</code>ボタンを押してライン・ラベルが表示されることを確認</li>
+      <li>もう一度<code>BUY</code>ボタンを押してライン・ラベルが消えることを確認（トグル動作）</li>
+      <li>問題なければ実際のトレードへ進む</li>
+    </ol>
+  </div>
+
+  <div class="section" id="params">
+    <h2>3. パラメータ完全ガイド // PARAMETERS</h2>
+
+    <h3>3-1. 基本設定</h3>
+    <table>
+      <tr><th>パラメータ</th><th>デフォルト</th><th>説明</th></tr>
+      <tr>
+        <td><code>RiskRewardRatio</code></td>
+        <td>1.5</td>
+        <td>リスクリワード比率。TP距離 = SL距離 × この値。v7.00ではスプレッド込みの実距離を基準に計算</td>
+      </tr>
+      <tr>
+        <td><code>EnableAutoRiskPercent</code></td>
+        <td>true</td>
+        <td><strong>自動リスク計算ON/OFF</strong><br>
+        ✅ true：1%固定で自動計算（Trial版制限）<br>
+        ❌ false：0.01ロット固定（Trial版制限）</td>
+      </tr>
+    </table>
+
+    <h3>3-2. FX通貨ペア設定</h3>
+    <table>
+      <tr><th>パラメータ</th><th>デフォルト</th><th>説明</th></tr>
+      <tr>
+        <td><code>StopLossPips</code></td>
+        <td>30</td>
+        <td>FX通貨ペアとインデックスで使用するSL距離（pips単位）</td>
+      </tr>
+    </table>
+
+    <h3>3-3. ゴールド・シルバー設定</h3>
+    <table>
+      <tr><th>パラメータ</th><th>デフォルト</th><th>説明</th></tr>
+      <tr>
+        <td><code>StopLossDollars</code></td>
+        <td>5.0</td>
+        <td>メタル（XAU/XAG/GOLD/SILVER）で使用するSL距離（USD単位）</td>
+      </tr>
+    </table>
+
+    <h3>3-4. 注文管理</h3>
+    <table>
+      <tr><th>パラメータ</th><th>デフォルト</th><th>説明</th></tr>
+      <tr>
+        <td><code>AllowBetterRR</code></td>
+        <td>true</td>
+        <td><strong>RR改善時のTP修正許可</strong>（v7.00新機能）<br>
+        ✅ true：現在のRRがパラメータ設定値より良い場合、TPを修正しない<br>
+        ❌ false：常にパラメータ設定値に合わせてTPを修正する<br><br>
+        <strong>使い分け：</strong><br>
+        true推奨：手動でTPを広げた場合にそれを尊重<br>
+        false：厳密にRRを管理したい場合</td>
+      </tr>
+      <tr>
+        <td><code>EnableOnTradeTransaction</code></td>
+        <td>true</td>
+        <td>OnTradeTransactionイベントの有効化。trueでリアルタイム管理、falseでタイマー主体の管理</td>
+      </tr>
+      <tr>
+        <td><code>MagicNumber</code></td>
+        <td>0</td>
+        <td>管理対象のマジックナンバー。0の場合は「マジック0かつ同一シンボル」の注文・ポジションを管理</td>
+      </tr>
+    </table>
+
+    <div class="note">
+      <strong>AllowBetterRRの詳細：</strong>
+      例えば、RRパラメータが2.0の場合、手動でTPを広げて実際のRRが2.5になったポジションは、
+      AllowBetterRR=trueならそのまま維持、falseならRR 2.0に修正されます。
+    </div>
+
+    <h3>3-5. 成行ライン設定</h3>
+    <table>
+      <tr><th>パラメータ</th><th>デフォルト</th><th>説明</th></tr>
+      <tr>
+        <td><code>LockMarketLines</code></td>
+        <td>false</td>
+        <td><strong>ライン固定モード</strong><br>
+        false：価格に追随して自動更新（おすすめ）<br>
+        true：ラインを固定し、手動でドラッグ調整可能</td>
+      </tr>
+      <tr>
+        <td><code>LineStyleSL</code></td>
+        <td>STYLE_DOT</td>
+        <td>SLラインのスタイル（v7.00で点線がデフォルト）</td>
+      </tr>
+      <tr>
+        <td><code>LineWidthSL</code></td>
+        <td>1</td>
+        <td>SLラインの太さ（ピクセル）</td>
+      </tr>
+      <tr>
+        <td><code>LineStyleTP</code></td>
+        <td>STYLE_DOT</td>
+        <td>TPラインのスタイル（v7.00で点線がデフォルト）</td>
+      </tr>
+      <tr>
+        <td><code>LineWidthTP</code></td>
+        <td>1</td>
+        <td>TPラインの太さ（ピクセル）</td>
+      </tr>
+    </table>
+
+    <h3>3-6. 情報パネル設定</h3>
+    <table>
+      <tr><th>パラメータ</th><th>デフォルト</th><th>説明</th></tr>
+      <tr>
+        <td><code>ShowInfoPanel</code></td>
+        <td>true</td>
+        <td><strong>パネル表示ON/OFF</strong>（v7.00新機能）<br>
+        true：情報パネルを表示<br>
+        false：ボタンのみ表示（チャートをすっきりさせたい場合）</td>
+      </tr>
+      <tr>
+        <td><code>PanelFontSize</code></td>
+        <td>12</td>
+        <td>情報パネルのフォントサイズ</td>
+      </tr>
+      <tr>
+        <td><code>PanelTextColor</code></td>
+        <td>clrWhite</td>
+        <td>情報パネルのテキストカラー（v7.00で白に変更）</td>
+      </tr>
+      <tr>
+        <td><code>ButtonWidth</code></td>
+        <td>75</td>
+        <td>ボタン幅（ピクセル）</td>
+      </tr>
+      <tr>
+        <td><code>ButtonHeight</code></td>
+        <td>25</td>
+        <td>ボタン高さ（ピクセル）</td>
+      </tr>
+    </table>
+
+    <h3>3-7. システム設定</h3>
+    <table>
+      <tr><th>パラメータ</th><th>デフォルト</th><th>説明</th></tr>
+      <tr>
+        <td><code>TimerInterval</code></td>
+        <td>300</td>
+        <td>監視間隔（ミリ秒）。v7.00で300ms（0.3秒）に変更。頻繁な監視が不要になったため</td>
+      </tr>
+    </table>
+
+    <div class="highlight-box">
+      <strong>💡 推奨初期設定</strong><br>
+      まずはデフォルト設定で使用してください。特に以下の設定は重要です：
+      <ul style="margin: 8px 0 0 1.2em;">
+        <li><code>RiskRewardRatio = 1.5〜2.0</code>：標準的なRR設定</li>
+        <li><code>StopLossPips = 20〜30</code>：FXのデイトレード向け</li>
+        <li><code>StopLossDollars = 3.0〜5.0</code>：ゴールドのデイトレード向け</li>
+        <li><code>AllowBetterRR = true</code>：手動調整を尊重</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="section" id="ui">
+    <h2>4. UI構成と新ボタン解説 // USER INTERFACE</h2>
+
+    <h3>4-1. 情報パネル（チャート右下）</h3>
+    <p>EA起動後、チャート右下にリアルタイム情報パネルが表示されます（ShowInfoPanel=trueの場合）。</p>
+
+    <h4>パネル表示項目：</h4>
+    <table>
+      <tr><th>表示項目</th><th>説明</th></tr>
+      <tr>
+        <td><code>== EA v7.00 Trial ==</code></td>
+        <td>EAバージョン表示</td>
+      </tr>
+      <tr>
+        <td><code>Type: Gold/Silver</code><br>または<br><code>Type: FX/Index</code></td>
+        <td>現在のシンボル種別</td>
+      </tr>
+      <tr>
+        <td><code>Spread: x.x pips</code></td>
+        <td>現在のスプレッド（pips換算）</td>
+      </tr>
+      <tr>
+        <td><code>Mode: RealTime</code><br>または<br><code>Mode: Timer</code></td>
+        <td>OnTradeTransaction有効時は「RealTime」、無効時は「Timer」</td>
+      </tr>
+      <tr>
+        <td><code>Risk: 1.0% (金額 通貨)</code><br>または<br><code>Risk: Manual (0.01 lot)</code></td>
+        <td><strong>リスクモード表示</strong>（Trial版では1%または0.01固定）</td>
+      </tr>
+      <tr>
+        <td><code>SL: 30 pips</code><br>または<br><code>SL: 5.00 USD</code></td>
+        <td>設定されているSL距離</td>
+      </tr>
+      <tr>
+        <td><code>Lot: x.xx / RR: x.xx</code></td>
+        <td>計算された最適ロットとリスクリワード比率</td>
+      </tr>
+      <tr>
+        <td><code>L:xxxx / W:xxxx 通貨</code></td>
+        <td>想定損失額（Loss）と想定利益額（Win）</td>
+      </tr>
+      <tr>
+        <td><code>Pos/Ord: x/x</code></td>
+        <td>口座全体のポジション数/注文数</td>
+      </tr>
+      <tr>
+        <td><code>Managed: x/x</code></td>
+        <td>このEAが管理しているポジション数/注文数</td>
+      </tr>
+      <tr>
+        <td><code>Today: x/3 trades</code></td>
+        <td><strong>本日のトレード回数</strong>（Trial版の日次制限表示）</td>
+      </tr>
+      <tr>
+        <td><code>Trial: ~2026/03/31</code></td>
+        <td>Trial版の有効期限</td>
+      </tr>
+      <tr>
+        <td><code>Risk:1% Lot:0.01</code></td>
+        <td>Trial版の制限事項リマインダー</td>
+      </tr>
+    </table>
+
+    <h3>4-2. ボタン配置（2段構成）</h3>
+    <p>v7.00では、ボタンが2段構成になりました：</p>
+
+    <h4>上段（ポジション制御）：</h4>
+    <table>
+      <tr><th>ボタン</th><th>色</th><th>機能</th></tr>
+      <tr>
+        <td><strong>CL</strong></td>
+        <td>ダークレッド</td>
+        <td><strong>全決済</strong>：現在のシンボルの全ポジションを一括決済</td>
+      </tr>
+      <tr>
+        <td><strong>50%</strong></td>
+        <td>ダークゴールド</td>
+        <td><strong>ハーフクローズ</strong>：全ポジションの50%を部分決済</td>
+      </tr>
+      <tr>
+        <td><strong>BE</strong></td>
+        <td>ダークグリーン</td>
+        <td><strong>ブレークイーブン</strong>：含み益のあるポジションのSLをエントリー＋スプレッドに移動</td>
+      </tr>
+    </table>
+
+    <h4>下段（エントリー制御）：</h4>
+    <table>
+      <tr><th>ボタン</th><th>色</th><th>機能</th></tr>
+      <tr>
+        <td><strong>EXE</strong></td>
+        <td>オレンジ</td>
+        <td><strong>注文実行</strong>：表示中のSL/TPラインから成行注文を実行</td>
+      </tr>
+      <tr>
+        <td><strong>SELL</strong></td>
+        <td>赤</td>
+        <td><strong>SELL準備</strong>：SELL用のSL/TPラインとラベルを表示・トグル</td>
+      </tr>
+      <tr>
+        <td><strong>BUY</strong></td>
+        <td>青</td>
+        <td><strong>BUY準備</strong>：BUY用のSL/TPラインとラベルを表示・トグル</td>
+      </tr>
+    </table>
+
+    <div class="highlight-box">
+      <strong>💡 ボタン配置の工夫</strong><br>
+      上段にポジション制御、下段にエントリー制御を配置することで、誤操作を防ぎます。
+      また、危険度の高い「CL」ボタンを一番左に配置し、誤って押しにくくしています。
+    </div>
+
+    <h3>4-3. チャート上ラベル表示（v7.00改善点）</h3>
+    <p>BUYまたはSELLボタンを押すと、以下のラベルがチャート右端に表示されます：</p>
+
+    <table>
+      <tr><th>ラベル</th><th>色</th><th>位置</th><th>内容</th></tr>
+      <tr>
+        <td><strong>TP金額</strong></td>
+        <td>シアン（水色）</td>
+        <td>TPライン付近</td>
+        <td><code>+xxxx</code> 形式で想定利益額を表示</td>
+      </tr>
+      <tr>
+        <td><strong>SL金額</strong></td>
+        <td>オレンジ</td>
+        <td>SLライン付近</td>
+        <td><code>-xxxx</code> 形式で想定損失額を表示</td>
+      </tr>
+      <tr>
+        <td><strong>情報ラベル</strong></td>
+        <td>白</td>
+        <td>SLとTPの中間</td>
+        <td><code>Lot:x.xx/RR:x.xx</code> 形式でロットとRRを表示</td>
+      </tr>
+    </table>
+
+    <div class="note">
+      <strong>v7.00での改善点：</strong>
+      ラベルがチャート右端に固定表示されるようになりました（v5.00では現在時刻の位置に表示）。
+      これにより、チャートをスクロールしてもラベルが見やすくなりました。
+    </div>
+  </div>
+
+  <div class="section" id="market">
+    <h2>5. 成行エントリー完全フロー // MARKET ORDER FLOW</h2>
+
+    <h3>5-1. 基本的なワンクリックフロー</h3>
+    <ol>
+      <li><strong>チャート分析</strong>：テクニカル分析でエントリーポイントを決定</li>
+      <li><strong>日次制限確認</strong>：パネルで <code>Today: x/3 trades</code> を確認（3回に達している場合は翌日まで待機）</li>
+      <li><strong>方向選択</strong>：
+        <ul>
+          <li>買いたい場合：<code>BUY</code> ボタンをクリック</li>
+          <li>売りたい場合：<code>SELL</code> ボタンをクリック</li>
+        </ul>
+      </li>
+      <li><strong>ライン・ラベル表示確認</strong>：チャート上に以下が表示されます
+        <ul>
+          <li>🟠 オレンジのSLライン（点線）</li>
+          <li>🔵 シアンのTPライン（点線）</li>
+          <li>🏷️ オレンジのSL金額ラベル（<code>-xxxx</code>）</li>
+          <li>🏷️ シアンのTP金額ラベル（<code>+xxxx</code>）</li>
+          <li>🏷️ 白い情報ラベル（<code>Lot:x.xx/RR:x.xx</code>）</li>
+        </ul>
+      </li>
+      <li><strong>確認</strong>：表示された内容を確認
+        <ul>
+          <li>想定損失額が許容範囲内か？（Trial版では残高の約1%）</li>
+          <li>RRが設定通りか？</li>
+          <li>ロットサイズが適切か？（Trial版では自動計算または0.01）</li>
+        </ul>
+      </li>
+      <li><strong>実行</strong>：問題なければ <code>EXE</code> ボタンをクリック</li>
+      <li><strong>注文完了</strong>：
+        <ul>
+          <li>成行注文が発注される</li>
+          <li>SL/TPが設定される</li>
+          <li>ラインとラベルが自動でクリアされる</li>
+          <li>トレードカウントが1増える（<code>Today: (x+1)/3 trades</code>）</li>
+          <li>ログに <code>[Market Execute] Success. Lot=x.xx (Trades today: x/3)</code> と表示される</li>
+        </ul>
+      </li>
+    </ol>
+
+    <h3>5-2. 日次制限に達した場合</h3>
+    <pre>
+// 3回目のトレード実行時
+[Market Execute] Success. Lot=0.10 (Trades today: 3/3)
+
+// 4回目のトレード実行を試みた場合
+[Trial] Daily trade limit reached: 3/3
+Alert: "Daily trade limit reached (3/3 trades)"
+
+// 翌日の初回トレード時
+[Market Execute] Success. Lot=0.10 (Trades today: 1/3)
+    </pre>
+
+    <div class="note">
+      <strong>日次制限の仕組み：</strong>
+      MT5を再起動しても、同じ日であればトレード回数は保持されます。
+      翌日（サーバー時間で日付が変わると）自動的にリセットされ、また3回までトレードできるようになります。
+    </div>
+
+    <h3>5-3. Trial版での注意事項</h3>
+    <ul>
+      <li>✅ 1日3回の制限はNew York時間（サーバー時間）の日付変更でリセットされます</li>
+      <li>✅ 指値注文が約定した場合もカウントに含まれます</li>
+      <li>✅ EAボタン経由でない手動発注はカウントに含まれません</li>
+      <li>✅ ポジションの部分決済や全決済はカウントに含まれません</li>
+      <li>✅ 制限に達しても、既存ポジションのSL/TP管理は継続されます</li>
+    </ul>
+  </div>
+
+  <div class="section" id="pending">
+    <h2>6. 指値注文とポジション管理 // PENDING ORDERS & POSITIONS</h2>
+
+    <h3>6-1. 指値・逆指値注文の自動管理</h3>
+    <p>MT5の注文機能で <code>BUY LIMIT</code>、<code>SELL LIMIT</code>、<code>BUY STOP</code>、<code>SELL STOP</code> を発注した場合、EAが自動的に検出して管理します。</p>
+
+    <h4>管理フロー：</h4>
+    <ol>
+      <li><strong>検出</strong>：OnTradeTransaction または OnTimer で新規注文を検出</li>
+      <li><strong>条件確認</strong>：シンボルとMagicNumberが管理対象か判定</li>
+      <li><strong>SL/TP設定</strong>：
+        <ul>
+          <li>SL/TPが両方0の場合 → 自動でSL/TPを計算して設定</li>
+          <li>SLのみ設定済みの場合 → RRに基づいてTPを計算して設定</li>
+        </ul>
+      </li>
+      <li><strong>ロット調整</strong>（自動リスクON時のみ）：
+        <ul>
+          <li>現在のロットが最適ロットと異なる場合</li>
+          <li>注文を一旦削除して最適ロットで再発注（ReplaceOrder）</li>
+        </ul>
+      </li>
+    </ol>
+
+    <h3>6-2. 既存ポジションの管理</h3>
+    <p>指値注文が約定してポジションになった場合、または手動で成行注文した場合も自動管理されます。</p>
+
+    <h4>管理対象：</h4>
+    <ul>
+      <li><strong>SL/TP未設定のポジション</strong>：エントリー価格から適切なSL/TPを計算して設定</li>
+      <li><strong>TPがRR通りでないポジション</strong>：
+        <ul>
+          <li>現在のSL距離からRRに基づいた正しいTPを再計算</li>
+          <li><code>AllowBetterRR=true</code> の場合、現在のRRがパラメータより良ければ修正しない</li>
+          <li><code>AllowBetterRR=false</code> の場合、常にパラメータのRRに修正</li>
+        </ul>
+      </li>
+    </ul>
+
+    <div class="highlight-box">
+      <strong>🎯 AllowBetterRRの実践例</strong><br>
+      <strong>シナリオ：</strong>RiskRewardRatio=2.0に設定、手動でTPを広げて実際のRRが2.5になったポジション
+      <ul style="margin: 8px 0 0 1.2em;">
+        <li><code>AllowBetterRR = true</code>：「RR 2.5の方が有利だから、そのままにしておこう」→ 修正しない</li>
+        <li><code>AllowBetterRR = false</code>：「ルールはRR 2.0だから、厳密に守ろう」→ RR 2.0に修正</li>
+      </ul>
+    </div>
+
+    <h3>6-3. 実際の運用例</h3>
+    <pre>
+// シナリオ1：指値注文を手動発注
+1. チャートで指値価格を決める
+2. MT5標準機能で BUY LIMIT を発注（SL/TP未設定）
+3. EAが検出して自動的にSL/TPを設定
+4. 自動リスクONの場合、ロットも最適化
+5. 約定後、トレードカウントが1増える
+
+// シナリオ2：EAのBUYボタン経由で成行発注
+1. BUYボタン → EXEボタンで成行発注
+2. 発注時点で最適なSL/TP/ロットが設定済み
+3. トレードカウントが1増える
+4. 以後はそのままキープ（RR維持）
+
+// シナリオ3：手動で成行発注
+1. MT5標準機能で成行注文（SL/TP未設定）
+2. EAが検出して自動的にSL/TPを設定
+3. RRに基づいたTPを計算して反映
+4. トレードカウントは増えない（EA経由ではないため）
+    </pre>
+  </div>
+
+  <div class="section" id="position-control">
+    <h2>7. ポジション制御機能（NEW） // POSITION CONTROL</h2>
+
+    <h3>7-1. ブレークイーブン（BE）ボタン</h3>
+    
+    <h4>機能概要：</h4>
+    <p>
+      含み益のあるポジションのストップロスを、エントリー価格＋スプレッド＋スワップ調整に自動移動します。
+      これにより、最悪でも損益ゼロ（手数料・スワップ分は含む）で決済されることが保証されます。
+    </p>
+
+    <h4>実行条件：</h4>
+    <ul>
+      <li>ポジションが含み益状態（<code>PositionGetDouble(POSITION_PROFIT) > 0</code>）</li>
+      <li>BUYの場合：現在価格（Bid）がエントリー＋スプレッドより上</li>
+      <li>SELLの場合：現在価格（Ask）がエントリー−スプレッドより下</li>
+      <li>新しいSL位置が現在のSLより有利な位置</li>
+    </ul>
+
+    <h4>計算ロジック：</h4>
+    <pre>
+// BUYポジションの場合
+新SL = エントリー価格 + スプレッド - スワップ換算額
+     = Entry + (Ask - Bid) - SwapInPrice
+
+// SELLポジションの場合  
+新SL = エントリー価格 - スプレッド + スワップ換算額
+     = Entry - (Ask - Bid) + SwapInPrice
+
+// スワップ換算額の計算
+SwapInPrice = (Swap / (TickValue × Lot)) × TickSize
+    </pre>
+
+    <h4>使用例：</h4>
+    <pre>
+// 実行前の状態
+Position #12345 (BUY EURUSD 0.10)
+Entry: 1.10000
+Current SL: 1.09700
+Current Price: 1.10050 (含み益)
+Spread: 0.00002 (2 pips)
+Swap: -50 JPY (マイナススワップ)
+
+// BEボタンをクリック
+[Breakeven] Position #12345 moved. New SL=1.10002
+
+// 実行後の状態
+Position #12345 (BUY EURUSD 0.10)
+Entry: 1.10000
+Current SL: 1.10002 (← エントリー + スプレッド)
+Current Price: 1.10050
+→ 価格が下落してもほぼゼロで決済される
+    </pre>
+
+    <div class="note">
+      <strong>スワップ調整について：</strong>
+      マイナススワップが発生している場合、その分だけSLを手前に配置します。
+      これにより、実際の損益がゼロに近い位置で決済されます。
+    </div>
+
+    <h3>7-2. ハーフクローズ（50%）ボタン</h3>
+
+    <h4>機能概要：</h4>
+    <p>
+      現在のシンボルの全ポジションの50%を部分決済します。
+      利益を確保しつつ、残りのポジションでさらなる利益を狙う戦略に有効です。
+    </p>
+
+    <h4>実行条件：</h4>
+    <ul>
+      <li>ポジションのロットが最小ロットの2倍以上</li>
+      <li>50%決済後の残りロットが最小ロット以上</li>
+    </ul>
+
+    <h4>計算ロジック：</h4>
+    <pre>
+// 50%ロットの計算
+HalfLot = CurrentLot × 0.5
+HalfLot = Floor(HalfLot / LotStep) × LotStep  // ロットステップで丸める
+
+// 残りロットの計算
+RemainingLot = CurrentLot - HalfLot
+
+// 実行可否の判定
+if (HalfLot >= MinLot && RemainingLot >= MinLot) {
+    // 部分決済実行
+}
+    </pre>
+
+    <h4>使用例：</h4>
+    <pre>
+// 実行前の状態
+Position #12345 (BUY EURUSD 0.20)
+Entry: 1.10000
+Current Price: 1.10200 (含み益 +200 pips)
+
+// 50%ボタンをクリック
+[Half Close] Position #12345 closed. Closed=0.10, Remaining=0.10
+
+// 実行後の状態
+Position #12345 (BUY EURUSD 0.10)  ← ロットが半分に
+Entry: 1.10000
+Current Price: 1.10200
+→ 0.10ロット分の利益が確定し、残り0.10ロットは継続
+    </pre>
+
+    <div class="highlight-box">
+      <strong>💡 実践的な使い方</strong>
+      <ol style="margin: 8px 0 0 1.2em;">
+        <li>ポジションが含み益になったら <code>BE</code> ボタンで損益ゼロを確保</li>
+        <li>さらに含み益が増えたら <code>50%</code> ボタンで半分を利確</li>
+        <li>残り半分は本来のTPまで伸ばすか、状況に応じて <code>CL</code> で全決済</li>
+      </ol>
+    </div>
+
+    <h3>7-3. 全決済（CL）ボタン</h3>
+
+    <h4>機能概要：</h4>
+    <p>
+      現在のシンボル（EAを適用しているチャートの通貨ペア）の全ポジションを一括決済します。
+      急激な相場変動時や、トレード終了時に便利です。
+    </p>
+
+    <h4>実行条件：</h4>
+    <ul>
+      <li>現在のシンボルにポジションが存在する</li>
+      <li>（MagicNumberフィルタは適用されない。シンボルが一致すれば全て決済）</li>
+    </ul>
+
+    <h4>使用例：</h4>
+    <pre>
+// 実行前の状態
+Position #12345 (BUY EURUSD 0.10)
+Position #12346 (SELL EURUSD 0.05)
+Position #12347 (BUY EURUSD 0.20)
+
+// CLボタンをクリック
+[Close All] Position #12345 closed
+[Close All] Position #12346 closed
+[Close All] Position #12347 closed
+[Close All] Completed: 3 closed, 0 failed
+
+// 実行後の状態
+ポジションなし
+    </pre>
+
+    <div class="note">
+      <strong>⚠️ 注意事項：</strong>
+      CLボタンは確認ダイアログなしで即座に全決済します。誤操作に注意してください。
+      MT5のストラテジーテスターでは、テスターパネルの「Close All」ボタンと同じ動作をします。
+    </div>
+
+    <h3>7-4. ポジション制御の実践シナリオ</h3>
+    <pre>
+【シナリオ：デイトレード】
+
+09:00 - EURUSD BUY 0.20ロットでエントリー
+        Entry: 1.10000, SL: 1.09700, TP: 1.10450
+
+10:30 - 含み益+50pips到達
+        → BEボタンをクリック
+        → SL: 1.10002 に移動（損益ゼロ確保）
+
+12:00 - 含み益+150pips到達  
+        → 50%ボタンをクリック
+        → 0.10ロット分を利確（+150pips × 0.10 = +15pips利益確定）
+        → 残り0.10ロットは継続
+
+14:00 - 相場が反転の兆し
+        → CLボタンをクリック
+        → 残り0.10ロットを全決済（+120pips × 0.10 = +12pips利益確定）
+
+結果：トータル +27pips の利益確保に成功
+    </pre>
+  </div>
+
+  <div class="section" id="spread">
+    <h2>8. スプレッド込みRR計算 // SPREAD-ADJUSTED RR</h2>
+
+    <h3>8-1. なぜスプレッドを考慮する必要があるのか？</h3>
+    <p>
+      成行注文では、BuyはAsk価格、SellはBid価格でエントリーします。
+      しかし、SL価格は常にBid（Buy時）またはAsk（Sell時）を基準とするため、
+      <strong>実際のリスク距離にはスプレッドが含まれます</strong>。
+    </p>
+
+    <div class="highlight-box">
+      <strong>具体例：</strong><br>
+      パラメータ設定：<code>StopLossPips = 30</code>、<code>RiskRewardRatio = 2.0</code><br>
+      現在価格：<code>Bid = 1.10000</code>、<code>Ask = 1.10002</code>（スプレッド2pips）<br><br>
+      
+      <strong>従来のEA（スプレッド未考慮）：</strong><br>
+      Buy Entry: 1.10002 (Ask)<br>
+      SL: 1.10002 - 0.00030 = 1.09972<br>
+      TP: 1.10002 + 0.00060 = 1.10062<br>
+      → 実際のリスク距離 = Ask - SL = 1.10002 - 1.09972 = <strong>30pips</strong>... ではない！<br>
+      → SL発動はBidで判定されるため、実リスク = 1.10000 - 1.09972 = <strong>28pips</strong><br>
+      → <strong>RRがズレる！</strong><br><br>
+      
+      <strong>v7.00（スプレッド考慮）：</strong><br>
+      Buy Entry: 1.10002 (Ask)<br>
+      実際のリスク距離 = パラメータSL距離 + スプレッド = 30pips + 2pips = <strong>32pips</strong><br>
+      SL: Bid - 30pips = 1.10000 - 0.00030 = 1.09970<br>
+      TP: Ask + (32pips × 2.0) = 1.10002 + 0.00064 = 1.10066<br>
+      → <strong>正確なRR 2.0を維持！</strong>
+    </div>
+
+    <h3>8-2. v7.00の計算ロジック</h3>
+
+    <h4>BUY注文の場合：</h4>
+    <pre>
+// エントリー価格
+Entry = Ask
+
+// SL価格（パラメータで設定した距離分だけBidから離す）
+SL = Bid - StopLossPips
+
+// 実際のリスク距離（スプレッド込み）
+実リスク距離 = Entry - SL = Ask - (Bid - StopLossPips)
+            = Ask - Bid + StopLossPips
+            = スプレッド + StopLossPips
+
+// TP距離（実リスク距離 × RR）
+TP距離 = 実リスク距離 × RiskRewardRatio
+
+// TP価格
+TP = Entry + TP距離 = Ask + (実リスク距離 × RiskRewardRatio)
+    </pre>
+
+    <h4>SELL注文の場合：</h4>
+    <pre>
+// エントリー価格
+Entry = Bid
+
+// SL価格（パラメータで設定した距離分だけAskから離す）
+SL = Ask + StopLossPips
+
+// 実際のリスク距離（スプレッド込み）
+実リスク距離 = SL - Entry = (Ask + StopLossPips) - Bid
+            = Ask - Bid + StopLossPips
+            = スプレッド + StopLossPips
+
+// TP距離（実リスク距離 × RR）
+TP距離 = 実リスク距離 × RiskRewardRatio
+
+// TP価格
+TP = Entry - TP距離 = Bid - (実リスク距離 × RiskRewardRatio)
+    </pre>
+
+    <h3>8-3. スプレッドが広い銘柄での効果</h3>
+
+    <table>
+      <tr><th>銘柄</th><th>典型的なスプレッド</th><th>スプレッド考慮の重要度</th></tr>
+      <tr>
+        <td>EURUSD</td>
+        <td>1〜2 pips</td>
+        <td>低（SL距離30pipsなら誤差6%）</td>
+      </tr>
+      <tr>
+        <td>GBPJPY</td>
+        <td>3〜5 pips</td>
+        <td>中（SL距離30pipsなら誤差10〜17%）</td>
+      </tr>
+      <tr>
+        <td>XAUUSD</td>
+        <td>20〜50 cents</td>
+        <td><strong>高</strong>（SL距離$5なら誤差40〜100%！）</td>
+      </tr>
+      <tr>
+        <td>仮想通貨CFD</td>
+        <td>$50〜$100</td>
+        <td><strong>極めて高</strong></td>
+      </tr>
+    </table>
+
+    <div class="note">
+      <strong>メリット：</strong>
+      v7.00では、スプレッドが広いゴールドや早朝の通貨ペアでも、設定したRRが正確に維持されます。
+      特にゴールドトレーダーにとって、この機能は必須です。
+    </div>
+  </div>
+
+  <div class="section" id="examples">
+    <h2>9. 実践的な運用例 // PRACTICAL EXAMPLES</h2>
+
+    <h3>10-1. 推奨設定例</h3>
+
+    <h4>A. FXデイトレード（EURUSD、USDJPY等）</h4>
+    <table>
+      <tr><th>パラメータ</th><th>推奨値</th></tr>
+      <tr><td>RiskRewardRatio</td><td>1.5〜2.0</td></tr>
+      <tr><td>StopLossPips</td><td>20〜30 pips</td></tr>
+      <tr><td>EnableAutoRiskPercent</td><td>true（Trial版では1%固定）</td></tr>
+      <tr><td>LockMarketLines</td><td>false</td></tr>
+      <tr><td>AllowBetterRR</td><td>true</td></tr>
+    </table>
+
+    <h4>B. ゴールドデイトレード（XAUUSD）</h4>
+    <table>
+      <tr><th>パラメータ</th><th>推奨値</th></tr>
+      <tr><td>RiskRewardRatio</td><td>2.0〜3.0</td></tr>
+      <tr><td>StopLossDollars</td><td>3.0〜5.0 USD</td></tr>
+      <tr><td>EnableAutoRiskPercent</td><td>true（Trial版では1%固定）</td></tr>
+      <tr><td>LockMarketLines</td><td>false</td></tr>
+      <tr><td>AllowBetterRR</td><td>true</td></tr>
+    </table>
+
+    <h4>C. スイングトレード（日足ベース）</h4>
+    <table>
+      <tr><th>パラメータ</th><th>推奨値</th></tr>
+      <tr><td>RiskRewardRatio</td><td>2.0〜4.0</td></tr>
+      <tr><td>StopLossPips</td><td>50〜100 pips</td></tr>
+      <tr><td>EnableAutoRiskPercent</td><td>true（Trial版では1%固定）</td></tr>
+      <tr><td>LockMarketLines</td><td>true（指定価格まで待つ）</td></tr>
+      <tr><td>AllowBetterRR</td><td>true</td></tr>
+    </table>
+
+    <h3>10-2. 実践シナリオ：EURUSDデイトレード</h3>
+    <pre>
+【設定】
+口座残高：1,000,000円（JPY口座）
+RiskPercent：1.0%（Trial版固定）
+StopLossPips：30 pips
+RiskRewardRatio：2.0
+AllowBetterRR：true
+
+【09:00】チャート分析
+- 4時間足でサポートライン付近
+- 1時間足で反発の兆候
+- BUY検討
+
+【09:15】エントリー準備
+- BUYボタンをクリック
+- ラベル確認：
+  - SL金額：-10,000円
+  - TP金額：+20,000円
+  - Lot：0.30 / RR：2.00
+- 想定損失が1%（10,000円）以内 → OK
+
+【09:16】エントリー実行
+- EXEボタンをクリック
+- [Market Execute] Success. Lot=0.30 (Trades today: 1/3)
+- Entry: 1.10000, SL: 1.09700, TP: 1.10600
+
+【10:30】含み益+50pips到達
+- 現在価格：1.10500
+- BEボタンをクリック
+- SLが1.10002に移動（損失リスクゼロ）
+
+【12:00】含み益+150pips到達
+- 現在価格：1.11500
+- 50%ボタンをクリック
+- 0.15ロット分を利確（+15,000円確定）
+- 残り0.15ロットは継続
+
+【14:00】TP到達
+- 価格が1.10600に到達
+- 残り0.15ロットが自動決済（+9,000円確定）
+
+【結果】
+- トレード回数：1/3（まだ2回使える）
+- 利益：+15,000円（50%決済） + +9,000円（TP到達） = +24,000円
+- 実質リスクリワード：24,000円 / 10,000円 = 2.4
+    </pre>
+
+    <h3>10-3. ベストプラクティス</h3>
+
+    <h4>✅ DO（推奨）：</h4>
+    <ul>
+      <li>デモ口座で最低1週間は動作確認してから実運用する</li>
+      <li>日次トレード制限（3回/日）を意識し、チャンスを厳選する</li>
+      <li>BEボタンは含み益が出たら積極的に使用する（損失リスクをゼロにする）</li>
+      <li>50%ボタンは利益を確保しつつ、さらなる利益を狙う場面で使用する</li>
+      <li>スプレッドが広い時間帯（早朝・経済指標発表時）は成行エントリーを避ける</li>
+      <li>複数銘柄で運用する場合、各チャートに個別にEAを設置する</li>
+    </ul>
+
+    <h4>❌ DON'T（非推奨）：</h4>
+    <ul>
+      <li>Trial版の1日3回制限を無視して、無理にトレードしない</li>
+      <li>BEボタンを押さずに含み益を放置しない（せっかくの機能を活用しよう）</li>
+      <li>CLボタンを誤って押さないよう注意する（確認ダイアログなし）</li>
+      <li>他のEAと同じMagicNumberを使わない（干渉の原因）</li>
+      <li>ラベル表示を確認せずにEXEボタンを押さない</li>
+    </ul>
+
+  </div>
+
+  <div class="section" id="troubleshooting">
+    <h2>10. トラブルシューティング // TROUBLESHOOTING</h2>
+
+    <h3>11-1. エントリー関連</h3>
+
+    <h4>Q1. EXEボタンを押してもエラーになる</h4>
+    <p><strong>A:</strong> 以下を確認してください：</p>
+    <ul>
+      <li>BUYまたはSELLボタンを押してラインが表示されているか？</li>
+      <li>自動売買が有効になっているか？（ツール→オプション→エキスパートアドバイザ）</li>
+      <li>日次トレード制限（3回）に達していないか？（パネルで確認）</li>
+      <li>ログに <code>[Trial] Daily trade limit reached</code> と表示されていないか？</li>
+    </ul>
+
+    <h4>Q2. ロットが想定より小さい/大きい</h4>
+    <p><strong>A:</strong> Trial版では以下のように動作します：</p>
+    <ul>
+      <li><code>EnableAutoRiskPercent = true</code>：残高の1%固定で計算（変更不可）</li>
+      <li><code>EnableAutoRiskPercent = false</code>：0.01ロット固定（変更不可）</li>
+      <li>SL距離が大きいとロットは小さくなる（リスク1%を維持するため）</li>
+    </ul>
+
+    <h4>Q3. 「Daily trade limit reached」と表示される</h4>
+    <p><strong>A:</strong> 1日3回の制限に達しています。翌日（サーバー時間）まで待つと自動的にリセットされます。</p>
+
+    <div class="note">
+      <strong>日次制限について：</strong>
+      MT5を再起動しても、同じ日であればトレード回数は保持されます。
+      これにより、過剰なトレードを防ぎ、リスク管理を徹底できます。
+    </div>
+
+    <h3>11-2. ポジション管理関連</h3>
+
+    <h4>Q4. BEボタンを押してもSLが移動しない</h4>
+    <p><strong>A:</strong> 以下の条件を満たしているか確認してください：</p>
+    <ul>
+      <li>ポジションが含み益状態か？（<code>Profit > 0</code>）</li>
+      <li>BUYの場合：現在価格（Bid）がエントリー＋スプレッドより上か？</li>
+      <li>SELLの場合：現在価格（Ask）がエントリー−スプレッドより下か？</li>
+      <li>ログに <code>[Breakeven] No positions eligible</code> と表示されているか？</li>
+    </ul>
+
+    <h4>Q5. 50%ボタンを押してもポジションが決済されない</h4>
+    <p><strong>A:</strong> 以下の原因が考えられます：</p>
+    <ul>
+      <li>ポジションのロットが最小ロット（通常0.01）の2倍未満</li>
+      <li>50%決済後の残りロットが最小ロット未満になる</li>
+      <li>ログに <code>[Half Close] Position #xxxxx skipped. Lot too small</code> と表示されているか確認</li>
+    </ul>
+
+    <h3>11-3. 指値注文関連</h3>
+
+    <h4>Q6. 指値注文のSL/TPが自動設定されない</h4>
+    <p><strong>A:</strong> 以下を確認してください：</p>
+    <ul>
+      <li>注文のシンボルがEAを設置したチャートと同じか？</li>
+      <li>MagicNumberが条件に合っているか？（MagicNumber=0なら、注文もMagic=0が必要）</li>
+      <li>EnableOnTradeTransactionがfalseの場合、TimerInterval（300ms）ごとの監視になるため遅延が発生</li>
+      <li>ログに <code>Order xxxxx: Initial SL/TP set</code> と表示されているか？</li>
+    </ul>
+
+    <h4>Q7. 指値注文が約定後、ロットが変更されている</h4>
+    <p><strong>A:</strong> 正常な動作です。自動リスクON時、以下の流れで最適化されます：</p>
+    <ol>
+      <li>指値注文を手動発注（例：0.05ロット）</li>
+      <li>EAが検出し、SL距離から最適ロット（例：0.08ロット）を計算</li>
+      <li>ロットが異なる場合、注文を削除して再発注（ReplaceOrder）</li>
+      <li>ログに <code>Replaced order xxxxx -> yyyyy</code> と表示される</li>
+    </ol>
+
+    <h3>11-4. 表示関連</h3>
+
+    <h4>Q8. ラベルが表示されない</h4>
+    <p><strong>A:</strong> 以下を確認してください：</p>
+    <ul>
+      <li>BUYまたはSELLボタンを押した後、チャートを左右にスクロールしていないか？</li>
+      <li>v7.00ではチャート右端に固定表示されるため、右端を確認してください</li>
+      <li>チャートを右クリック → オブジェクトリスト で <code>RR_EA_Panel_Label_*</code> が存在するか確認</li>
+      <li>LockMarketLines=trueでラインが画面外にある場合、ラベルも見えない可能性がある</li>
+    </ul>
+
+    <h4>Q9. 情報パネルが表示されない</h4>
+    <p><strong>A:</strong> <code>ShowInfoPanel</code> パラメータを確認してください：</p>
+    <ul>
+      <li><code>ShowInfoPanel = true</code>：パネル表示</li>
+      <li><code>ShowInfoPanel = false</code>：ボタンのみ表示</li>
+      <li>falseの場合は意図的な動作です</li>
+    </ul>
+
+    <h3>11-5. ログメッセージ例</h3>
+    <pre>
+// 正常動作時
+=== EA v7.00 Trial Version (GlobalVariable Persistent) ===
+Trial version - Risk: 1% fixed, Manual Lot: 0.01 fixed
+Valid until: 2026/03/31
+Daily trade limit: 3 trades per day (Persistent via GlobalVariable)
+[Trial] Loaded trade count: 0/3
+[Market Execute] Success. Lot=0.24 (Trades today: 1/3)
+Order 123456: Initial SL/TP set
+[Breakeven] Position #12345 moved. New SL=1.10002
+
+// エラー時
+[Market Execute] ERROR: No lines displayed.
+[Trial] Daily trade limit reached: 3/3
+Alert: "Daily trade limit reached (3/3 trades)"
+[Breakeven] No positions eligible
+[Half Close] Position #12345 skipped. Lot too small (0.01)
+    </pre>
+
+    <h3>11-6. よくある質問</h3>
+
+    <h4>Q10. Trial版の期限が切れたらどうなる？</h4>
+    <p><strong>A:</strong> 2026年3月31日を過ぎると：</p>
+    <ul>
+      <li>EAは起動時に <code>Trial version expired</code> と表示</li>
+      <li>Alert が表示され、EAが自動的に停止</li>
+      <li>新規トレードは実行できなくなる</li>
+      <li>既存ポジションのSL/TP管理も停止</li>
+    </ul>
+  </div>
+
+  <div class="section" id="download">
+    <h2>11. ダウンロード // DOWNLOAD</h2>
+
+    <div style="text-align: center; padding: 20px 0;">
+      <div style="display: inline-block; padding: 20px 30px; background: linear-gradient(135deg, rgba(0, 246, 255, 0.15), rgba(255, 46, 245, 0.15)); border: 2px solid var(--accent-cyan); border-radius: 12px; box-shadow: 0 0 30px rgba(0, 246, 255, 0.5); margin: 20px 0;">
+        <h3 style="margin: 0 0 16px 0; color: var(--accent-cyan); font-size: 1.4rem;">RiskRewardSLTPMaster v7.00 Trial</h3>
+        <a href="https://drive.google.com/file/d/1yqUKHkPZOAIZ8GcrXDw9SdKaHqM4y9VD/view?usp=sharing" target="_blank" style="display: inline-block; padding: 14px 40px; background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple)); color: #000; font-weight: bold; text-decoration: none; border-radius: 8px; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 0.1em; box-shadow: 0 0 20px rgba(0, 246, 255, 0.6); transition: all 0.3s ease;">
+          📥 Google Driveからダウンロード
+        </a>
+      </div>
+    </div>
+
+    <div class="trial-warning">
+      <strong>⚠️ TRIAL VERSION NOTICE</strong>
+      <ul style="margin: 12px 0 0 1.2em; line-height: 1.9;">
+        <li><strong>使用期限：</strong>本EAは <span style="color: var(--accent-orange); font-weight: bold;">2026年3月31日まで</span> の期間限定で使用可能です</li>
+        <li><strong>リスク設定：</strong>自動リスクON時は1%固定、OFF時は0.01ロット固定で動作します（変更不可）</li>
+        <li><strong>日次制限：</strong>1日3回までのトレード制限があります（GlobalVariableで永続化）</li>
+        <li><strong>機能制限：</strong>全ての機能が使用可能です（BE/50%/CL含む）</li>
+        <li><strong>自己責任：</strong>本EAの使用は完全に自己責任となります。開発者は一切の責任を負いません</li>
+        <li><strong>リスク理解：</strong>FX・CFD取引には高いリスクが伴います。必ずデモ口座で十分にテストしてから使用してください</li>
+        <li><strong>資金管理：</strong>失っても良い余剰資金の範囲内で運用してください</li>
+        <li><strong>再配布禁止：</strong>本EAの無断転載・再配布は固く禁止します</li>
+        <li><strong>サポート：</strong>本EAは無保証・ノーサポートです。マニュアルを熟読の上ご使用ください</li>
+      </ul>
+    </div>
+
+    <div class="note">
+      <strong>📌 使用前チェックリスト：</strong><br>
+      ✅ マニュアルを最後まで読んだ<br>
+      ✅ パラメータの意味を理解した<br>
+      ✅ Trial版の制限事項を理解した<br>
+      ✅ デモ口座で動作確認を行った<br>
+      ✅ 日次トレード制限（3回/日）を理解した<br>
+      ✅ 新しいボタン（BE/50%/CL）の使い方を理解した<br>
+      ✅ 自分のトレードスタイルに合った設定を決めた<br>
+      ✅ リスク管理ルールを明確にした<br>
+      ✅ 全て自己責任であることを理解した
+    </div>
+
+    <h3>12-1. インストール後の初回起動手順</h3>
+    <ol>
+      <li>ダウンロードした <code>RiskRewardSLTPMaster_v7.00_Trial.ex5</code> を <code>MQL5/Experts</code> フォルダにコピー</li>
+      <li>MT5を再起動してEAリストを更新</li>
+      <li>デモ口座で最も取引量の多い銘柄（EURUSD等）のチャートに適用</li>
+      <li>パラメータは初期値のまま「OK」をクリック</li>
+      <li>情報パネルとボタンが表示されることを確認</li>
+      <li>パネルに <code>Today: 0/3 trades</code> と表示されることを確認</li>
+      <li>BUYボタンを押してラインとラベルが表示されることを確認</li>
+      <li>ラベルの金額・ロット・RRが妥当な範囲内か確認</li>
+      <li>問題なければEXEボタンで試験発注（1回目のトレード）</li>
+      <li>エキスパートログで <code>[Market Execute] Success. Lot=x.xx (Trades today: 1/3)</code> を確認</li>
+      <li>BEボタン・50%ボタン・CLボタンの動作を確認</li>
+      <li>十分にテストしてから実運用へ移行</li>
+    </ol>
+
+    <div style="text-align: center; margin: 30px 0 20px;">
+      <p style="font-size: 1.1rem; color: var(--accent-cyan); letter-spacing: 0.05em;">
+        良いトレードを！ // GOOD TRADING!
+      </p>
+      <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 8px;">
+        リスク管理こそが、長期的な成功への唯一の道です
+      </p>
+    </div>
+  </div>
+
+  <div class="footer">
+    RISKREWARDSLTPMASTER v7.00 TRIAL EDITION // COPYRIGHT 2024 SYA-NON<br>
+    <span style="font-size: 0.7rem; color: var(--text-muted); margin-top: 4px; display: inline-block;">
+      TRIAL: RISK 1% FIXED / LOT 0.01 FIXED / 3 TRADES/DAY / EXPIRY: 2026.03.31
+    </span>
+  </div>
+</div>
+</body>
+</html>
