@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>RiskRewardSLTPMaster_v7.00 完全マニュアル</title>
+  <title>RiskRewardSLTPMaster_v9.00 完全マニュアル</title>
   <style>
     :root {
       --bg-main: #05060b;
@@ -69,7 +69,7 @@
     }
 
     h1::after {
-      content: " // v7.00 TRIAL";
+      content: " // v9.00 TRIAL";
       font-size: 0.72rem;
       color: var(--accent-pink);
       margin-left: 8px;
@@ -455,7 +455,7 @@
 <body>
 <div class="frame">
   <div class="tagline">TRIAL VERSION RISK MANAGEMENT SYSTEM</div>
-  <h1>RiskRewardSLTPMaster <span class="version-badge">v7.00 Trial</span></h1>
+  <h1>RiskRewardSLTPMaster <span class="version-badge">v9.00 Trial</span></h1>
 
   <div class="chip-row">
     <div class="chip">Spread-Adjusted RR</div>
@@ -491,7 +491,7 @@
       </div>
       <div class="toc-item" onclick="location.hash='#ui'">
         <span class="toc-label">SECTION 4</span>
-        <span class="toc-title">UI構成と新ボタン解説</span>
+        <span class="toc-title">UI構成とボタン解説</span>
       </div>
       <div class="toc-item" onclick="location.hash='#market'">
         <span class="toc-label">SECTION 5</span>
@@ -503,7 +503,7 @@
       </div>
       <div class="toc-item" onclick="location.hash='#position-control'">
         <span class="toc-label">SECTION 7</span>
-        <span class="toc-title">ポジション制御機能（NEW）</span>
+        <span class="toc-title">ポジション制御機能</span>
       </div>
       <div class="toc-item" onclick="location.hash='#spread'">
         <span class="toc-label">SECTION 8</span>
@@ -526,20 +526,22 @@
 
   <div class="section" id="overview">
     <h2>1. EA概要とTrial版制限 // OVERVIEW</h2>
-    
+
     <h3>1-1. 基本コンセプト</h3>
     <p>
-      <code>RiskRewardSLTPMaster v7.00 Trial</code> は、トレーダーが設定したリスク管理ルールを自動実行する次世代型リスク管理EAのトライアル版です。
+      <code>RiskRewardSLTPMaster v9.00 Trial</code> は、トレーダーが設定したリスク管理ルールを自動実行する次世代型リスク管理EAのトライアル版です。
       口座残高、ストップロス距離、リスクリワード比率から最適なロットサイズとSL/TP価格を自動計算し、成行・指値の両方に対応します。
     </p>
 
-    <h3>1-2. v7.00の新機能</h3>
+    <h3>1-2. v9.00の新機能・変更点</h3>
     <ul>
+      <li><strong>ライン追随モード改善（TRACKING / FIXED）</strong>：ラインをクリックまたはドラッグした瞬間に追随が停止。チャート上のライン状態（TRACKING/FIXED）をパネルにリアルタイム表示</li>
+      <li><strong>LockMarketLines廃止</strong>：従来のLockMarketLinesパラメータを廃止。ラインは常に選択・移動可能で、ドラッグした瞬間に自動的に固定モードへ移行</li>
+      <li><strong>ドラッグ操作の安定化</strong>：クリック時点でFIXED化し、OnTimerとの競合による座標上書きを根本解決（v8.60相当）</li>
+      <li><strong>RR色分け表示</strong>：ライン固定中、RRパラメータとの比較で情報ラベルを色分け表示（緑：改善/白：同値/黄：1.0以上RR未満/赤：1.0未満）</li>
       <li><strong>ブレークイーブン自動移動（BE）</strong>：含み益のあるポジションのSLをエントリー価格＋スプレッドに自動移動</li>
       <li><strong>ハーフクローズ（50%）</strong>：全ポジションの50%を部分決済して利益確保</li>
       <li><strong>全決済（CL）</strong>：現在のシンボルの全ポジションを一括決済</li>
-      <li><strong>RR改善時のTP修正制御</strong>：<code>AllowBetterRR</code>パラメータで、RRが改善されたポジションのTP修正を許可/禁止</li>
-      <li><strong>情報パネル表示切替</strong>：<code>ShowInfoPanel</code>でパネル表示をON/OFF可能</li>
       <li><strong>日次トレード制限</strong>：GlobalVariableによる永続化で、MT5再起動後も制限カウントを保持</li>
     </ul>
 
@@ -574,15 +576,14 @@
       これにより、デモ口座で安全にEAの挙動を確認できます。
     </div>
 
-    <h3>1-4. v5.00からの主な変更点</h3>
+    <h3>1-4. v7.00からの主な変更点</h3>
     <ul>
-      <li>✅ Trial版として再設計（期限管理・トレード回数制限）</li>
-      <li>✅ ポジション制御ボタン3つ追加（BE/50%/CL）</li>
-      <li>✅ ボタンレイアウトを2段構成に変更（視認性向上）</li>
-      <li>✅ GlobalVariableによるトレード回数の永続化</li>
-      <li>✅ AllowBetterRRパラメータ追加（TP修正制御）</li>
-      <li>✅ 情報パネル表示ON/OFF機能</li>
-      <li>✅ ラベル表示の改善（チャート右端に固定表示）</li>
+      <li>✅ <code>LockMarketLines</code>パラメータを廃止（ドラッグ＝固定モード自動移行）</li>
+      <li>✅ ライン追随状態（TRACKING/FIXED）をパネルに表示</li>
+      <li>✅ クリック時点でFIXED化（OnTimerとの競合問題を根本解決）</li>
+      <li>✅ ドラッグ完了直後500msのタイムスタンプガード追加</li>
+      <li>✅ RR色分けインジケーター（緑/白/黄/赤）</li>
+      <li>✅ バージョン表示を v9.00 に更新</li>
     </ul>
 
     <div class="highlight-box">
@@ -597,10 +598,10 @@
 
     <h3>2-1. ファイル配置</h3>
     <ol>
-      <li>Google Driveから <code>RiskRewardSLTPMaster_v7_Trial.ex5</code> をダウンロード</li>
+      <li>Google Driveから <code>RiskRewardSLTPMaster_v9_Trial.ex5</code> をダウンロード</li>
       <li>MT5を起動し、<code>ファイル → データフォルダを開く</code> をクリック</li>
       <li><code>MQL5/Experts</code> フォルダを開く</li>
-      <li>ダウンロードした <code>RiskRewardSLTPMaster_v7_Trial.ex5</code> をこのフォルダにコピー</li>
+      <li>ダウンロードした <code>RiskRewardSLTPMaster_v9_Trial.ex5</code> をこのフォルダにコピー</li>
       <li>MT5を再起動してEAリストを更新（または、ナビゲーターで右クリック→更新）</li>
     </ol>
 
@@ -621,7 +622,7 @@
     <h3>2-3. 初回起動確認</h3>
     <pre>
 // エキスパートログに以下が表示されればOK
-=== EA v7.00 Trial Version (GlobalVariable Persistent) ===
+=== EA v9.00 Trial Version ===
 Trial version - Risk: 1% fixed, Manual Lot: 0.01 fixed
 Valid until: 2026/03/31
 Daily trade limit: 3 trades per day (Persistent via GlobalVariable)
@@ -638,6 +639,7 @@ Daily trade limit: 3 trades per day (Persistent via GlobalVariable)
       <li>チャート右下に情報パネルとボタンが表示されることを確認</li>
       <li>パネルに <code>Today: 0/3 trades</code> と表示されることを確認</li>
       <li><code>BUY</code>ボタンを押してライン・ラベルが表示されることを確認</li>
+      <li>パネルに <code>Lines: TRACKING</code> と表示されることを確認</li>
       <li>もう一度<code>BUY</code>ボタンを押してライン・ラベルが消えることを確認（トグル動作）</li>
       <li>問題なければ実際のトレードへ進む</li>
     </ol>
@@ -652,7 +654,7 @@ Daily trade limit: 3 trades per day (Persistent via GlobalVariable)
       <tr>
         <td><code>RiskRewardRatio</code></td>
         <td>1.5</td>
-        <td>リスクリワード比率。TP距離 = SL距離 × この値。v7.00ではスプレッド込みの実距離を基準に計算</td>
+        <td>リスクリワード比率。TP距離 = SL距離 × この値。スプレッド込みの実距離を基準に計算</td>
       </tr>
       <tr>
         <td><code>EnableAutoRiskPercent</code></td>
@@ -689,7 +691,7 @@ Daily trade limit: 3 trades per day (Persistent via GlobalVariable)
       <tr>
         <td><code>AllowBetterRR</code></td>
         <td>true</td>
-        <td><strong>RR改善時のTP修正許可</strong>（v7.00新機能）<br>
+        <td><strong>RR改善時のTP修正許可</strong><br>
         ✅ true：現在のRRがパラメータ設定値より良い場合、TPを修正しない<br>
         ❌ false：常にパラメータ設定値に合わせてTPを修正する<br><br>
         <strong>使い分け：</strong><br>
@@ -718,16 +720,10 @@ Daily trade limit: 3 trades per day (Persistent via GlobalVariable)
     <table>
       <tr><th>パラメータ</th><th>デフォルト</th><th>説明</th></tr>
       <tr>
-        <td><code>LockMarketLines</code></td>
-        <td>false</td>
-        <td><strong>ライン固定モード</strong><br>
-        false：価格に追随して自動更新（おすすめ）<br>
-        true：ラインを固定し、手動でドラッグ調整可能</td>
-      </tr>
-      <tr>
         <td><code>LineStyleSL</code></td>
         <td>STYLE_DOT</td>
-        <td>SLラインのスタイル（v7.00で点線がデフォルト）</td>
+        <td>SLラインのスタイル（点線がデフォルト）<br>
+        <strong>※ v9.00でLockMarketLinesパラメータは廃止。ラインはクリック／ドラッグで自動固定</strong></td>
       </tr>
       <tr>
         <td><code>LineWidthSL</code></td>
@@ -737,7 +733,7 @@ Daily trade limit: 3 trades per day (Persistent via GlobalVariable)
       <tr>
         <td><code>LineStyleTP</code></td>
         <td>STYLE_DOT</td>
-        <td>TPラインのスタイル（v7.00で点線がデフォルト）</td>
+        <td>TPラインのスタイル（点線がデフォルト）</td>
       </tr>
       <tr>
         <td><code>LineWidthTP</code></td>
@@ -746,13 +742,20 @@ Daily trade limit: 3 trades per day (Persistent via GlobalVariable)
       </tr>
     </table>
 
+    <div class="note">
+      <strong>v9.00のライン操作：</strong>
+      <code>LockMarketLines</code>パラメータは廃止されました。ラインは常に選択・移動可能です。
+      ラインをクリックまたはドラッグした瞬間に自動的に「固定モード（FIXED）」へ移行し、価格追随が停止します。
+      BUY/SELLボタンを押し直すと追随モード（TRACKING）にリセットされます。
+    </div>
+
     <h3>3-6. 情報パネル設定</h3>
     <table>
       <tr><th>パラメータ</th><th>デフォルト</th><th>説明</th></tr>
       <tr>
         <td><code>ShowInfoPanel</code></td>
         <td>true</td>
-        <td><strong>パネル表示ON/OFF</strong>（v7.00新機能）<br>
+        <td><strong>パネル表示ON/OFF</strong><br>
         true：情報パネルを表示<br>
         false：ボタンのみ表示（チャートをすっきりさせたい場合）</td>
       </tr>
@@ -764,7 +767,7 @@ Daily trade limit: 3 trades per day (Persistent via GlobalVariable)
       <tr>
         <td><code>PanelTextColor</code></td>
         <td>clrWhite</td>
-        <td>情報パネルのテキストカラー（v7.00で白に変更）</td>
+        <td>情報パネルのテキストカラー</td>
       </tr>
       <tr>
         <td><code>ButtonWidth</code></td>
@@ -784,7 +787,7 @@ Daily trade limit: 3 trades per day (Persistent via GlobalVariable)
       <tr>
         <td><code>TimerInterval</code></td>
         <td>300</td>
-        <td>監視間隔（ミリ秒）。v7.00で300ms（0.3秒）に変更。頻繁な監視が不要になったため</td>
+        <td>監視間隔（ミリ秒）。300ms（0.3秒）ごとにポジション・注文を監視</td>
       </tr>
     </table>
 
@@ -801,7 +804,7 @@ Daily trade limit: 3 trades per day (Persistent via GlobalVariable)
   </div>
 
   <div class="section" id="ui">
-    <h2>4. UI構成と新ボタン解説 // USER INTERFACE</h2>
+    <h2>4. UI構成とボタン解説 // USER INTERFACE</h2>
 
     <h3>4-1. 情報パネル（チャート右下）</h3>
     <p>EA起動後、チャート右下にリアルタイム情報パネルが表示されます（ShowInfoPanel=trueの場合）。</p>
@@ -810,7 +813,7 @@ Daily trade limit: 3 trades per day (Persistent via GlobalVariable)
     <table>
       <tr><th>表示項目</th><th>説明</th></tr>
       <tr>
-        <td><code>== EA v7.00 Trial ==</code></td>
+        <td><code>== EA v9.00 Trial ==</code></td>
         <td>EAバージョン表示</td>
       </tr>
       <tr>
@@ -850,6 +853,13 @@ Daily trade limit: 3 trades per day (Persistent via GlobalVariable)
         <td>このEAが管理しているポジション数/注文数</td>
       </tr>
       <tr>
+        <td><code>Lines: TRACKING</code><br>または<br><code>Lines: FIXED</code></td>
+        <td><strong>ライン追随状態（v9.00新機能）</strong><br>
+        TRACKING：価格に追随中<br>
+        FIXED：ドラッグ/クリックで固定中<br>
+        ライン非表示時は区切り線（===）を表示</td>
+      </tr>
+      <tr>
         <td><code>Today: x/3 trades</code></td>
         <td><strong>本日のトレード回数</strong>（Trial版の日次制限表示）</td>
       </tr>
@@ -864,7 +874,7 @@ Daily trade limit: 3 trades per day (Persistent via GlobalVariable)
     </table>
 
     <h3>4-2. ボタン配置（2段構成）</h3>
-    <p>v7.00では、ボタンが2段構成になりました：</p>
+    <p>ボタンが2段構成になっています：</p>
 
     <h4>上段（ポジション制御）：</h4>
     <table>
@@ -912,7 +922,7 @@ Daily trade limit: 3 trades per day (Persistent via GlobalVariable)
       また、危険度の高い「CL」ボタンを一番左に配置し、誤って押しにくくしています。
     </div>
 
-    <h3>4-3. チャート上ラベル表示（v7.00改善点）</h3>
+    <h3>4-3. チャート上ラベル表示</h3>
     <p>BUYまたはSELLボタンを押すと、以下のラベルがチャート右端に表示されます：</p>
 
     <table>
@@ -931,17 +941,41 @@ Daily trade limit: 3 trades per day (Persistent via GlobalVariable)
       </tr>
       <tr>
         <td><strong>情報ラベル</strong></td>
-        <td>白</td>
+        <td>白（追随中）<br>緑/白/黄/赤（固定中）</td>
         <td>SLとTPの中間</td>
-        <td><code>Lot:x.xx/RR:x.xx</code> 形式でロットとRRを表示</td>
+        <td><code>Lot:x.xx/RR:x.xx</code> または <code>Lot:x.xx/RR:x.xx [FIXED]</code></td>
       </tr>
     </table>
 
     <div class="note">
-      <strong>v7.00での改善点：</strong>
-      ラベルがチャート右端に固定表示されるようになりました（v5.00では現在時刻の位置に表示）。
-      これにより、チャートをスクロールしてもラベルが見やすくなりました。
+      <strong>v9.00のRR色分け表示：</strong>
+      ライン固定中（FIXED状態）は、情報ラベルの色でRR状態を示します。<br>
+      🟢 緑：RRパラメータより明確に良い（改善済み）<br>
+      ⚪ 白：RRパラメータとほぼ同値（デフォルト位置）<br>
+      🟡 黄：RR 1.0以上・パラメータ未満（要注意）<br>
+      🔴 赤：RR 1.0未満（損失超過リスク）
     </div>
+
+    <h3>4-4. ライン操作（v9.00）</h3>
+    <table>
+      <tr><th>操作</th><th>動作</th></tr>
+      <tr>
+        <td>BUY/SELLボタンをクリック</td>
+        <td>ラインを表示・追随モード（TRACKING）で開始</td>
+      </tr>
+      <tr>
+        <td>ラインをクリック</td>
+        <td>即座に固定モード（FIXED）へ移行。以降は価格追随しない</td>
+      </tr>
+      <tr>
+        <td>ラインをドラッグ</td>
+        <td>固定モード（FIXED）へ移行し、ドラッグした位置で固定</td>
+      </tr>
+      <tr>
+        <td>BUY/SELLボタンを再クリック</td>
+        <td>ラインを非表示にしてリセット（次回表示時はTRACKINGに戻る）</td>
+      </tr>
+    </table>
   </div>
 
   <div class="section" id="market">
@@ -964,12 +998,19 @@ Daily trade limit: 3 trades per day (Persistent via GlobalVariable)
           <li>🏷️ オレンジのSL金額ラベル（<code>-xxxx</code>）</li>
           <li>🏷️ シアンのTP金額ラベル（<code>+xxxx</code>）</li>
           <li>🏷️ 白い情報ラベル（<code>Lot:x.xx/RR:x.xx</code>）</li>
+          <li>パネルに <code>Lines: TRACKING</code> と表示</li>
+        </ul>
+      </li>
+      <li><strong>ライン調整（任意）</strong>：SLまたはTPラインをドラッグして調整
+        <ul>
+          <li>ドラッグした瞬間に <code>Lines: FIXED</code> に切り替わる</li>
+          <li>情報ラベルに <code>[FIXED]</code> が追加され、RRに応じて色が変わる</li>
         </ul>
       </li>
       <li><strong>確認</strong>：表示された内容を確認
         <ul>
           <li>想定損失額が許容範囲内か？（Trial版では残高の約1%）</li>
-          <li>RRが設定通りか？</li>
+          <li>RRが設定通りか？（情報ラベルの色を参照）</li>
           <li>ロットサイズが適切か？（Trial版では自動計算または0.01）</li>
         </ul>
       </li>
@@ -980,24 +1021,22 @@ Daily trade limit: 3 trades per day (Persistent via GlobalVariable)
           <li>SL/TPが設定される</li>
           <li>ラインとラベルが自動でクリアされる</li>
           <li>トレードカウントが1増える（<code>Today: (x+1)/3 trades</code>）</li>
-          <li>ログに <code>[Market Execute] Success. Lot=x.xx (Trades today: x/3)</code> と表示される</li>
+          <li>ログに <code>[Market Execute] Success. Lot=x.xx</code> と表示される</li>
         </ul>
       </li>
     </ol>
 
     <h3>5-2. 日次制限に達した場合</h3>
     <pre>
-// 3回目のトレード実行時
-[Market Execute] Success. Lot=0.10 (Trades today: 3/3)
-[Trial] Auto SL/TP and Lot adjustment disabled - Daily limit reached
-[Trial] All buttons disabled - Daily limit reached
+// 3回目のトレード実行時（約定後にカウント増加）
+[Market Execute] Success. Lot=0.10
+[Trial] Daily limit reached after trade. 3/3
 
 // 4回目のトレード実行を試みた場合
 Alert: "Daily trade limit reached (3/3 trades)"
 
 // 翌日の初回トレード時
 [Trial] New day - reset trade count
-[Market Execute] Success. Lot=0.10 (Trades today: 1/3)
     </pre>
 
     <div class="note">
@@ -1058,8 +1097,8 @@ Alert: "Daily trade limit reached (3/3 trades)"
       <li><strong>TPがRR通りでないポジション</strong>：
         <ul>
           <li>現在のSL距離からRRに基づいた正しいTPを再計算</li>
-          <li><code>AllowBetterRR=true</code> の場合、現在のRRがパラメータより良ければ修正しない</li>
-          <li><code>AllowBetterRR=false</code> の場合、常にパラメータのRRに修正</li>
+          <li>現在のRRがパラメータより良ければ修正しない（手動改善を尊重）</li>
+          <li>RRより悪い場合のみ修正</li>
         </ul>
       </li>
     </ul>
@@ -1091,16 +1130,16 @@ Alert: "Daily trade limit reached (3/3 trades)"
 // シナリオ3：EAのBUYボタン経由で成行発注
 1. BUYボタン → EXEボタンで成行発注
 2. 発注時点で最適なSL/TP/ロットが設定済み
-3. トレードカウントが1増える
+3. 約定後にトレードカウントが1増える
 4. 以後はそのままキープ（RR維持）
     </pre>
   </div>
 
   <div class="section" id="position-control">
-    <h2>7. ポジション制御機能（NEW） // POSITION CONTROL</h2>
+    <h2>7. ポジション制御機能 // POSITION CONTROL</h2>
 
     <h3>7-1. ブレークイーブン（BE）ボタン</h3>
-    
+
     <h4>機能概要：</h4>
     <p>
       含み益のあるポジションのストップロスを、エントリー価格＋スプレッド＋スワップ調整に自動移動します。
@@ -1121,7 +1160,7 @@ Alert: "Daily trade limit reached (3/3 trades)"
 新SL = エントリー価格 + スプレッド - スワップ換算額
      = Entry + (Ask - Bid) - SwapInPrice
 
-// SELLポジションの場合  
+// SELLポジションの場合
 新SL = エントリー価格 - スプレッド + スワップ換算額
      = Entry - (Ask - Bid) + SwapInPrice
 
@@ -1137,16 +1176,13 @@ Entry: 1.10000
 Current SL: 1.09700
 Current Price: 1.10050 (含み益)
 Spread: 0.00002 (2 pips)
-Swap: -50 JPY (マイナススワップ)
 
 // BEボタンをクリック
 [Breakeven] Position #12345 moved. New SL=1.10002
 
 // 実行後の状態
 Position #12345 (BUY EURUSD 0.10)
-Entry: 1.10000
 Current SL: 1.10002 (← エントリー + スプレッド)
-Current Price: 1.10050
 → 価格が下落してもほぼゼロで決済される
     </pre>
 
@@ -1189,16 +1225,13 @@ if (HalfLot >= MinLot && RemainingLot >= MinLot) {
     <pre>
 // 実行前の状態
 Position #12345 (BUY EURUSD 0.20)
-Entry: 1.10000
-Current Price: 1.10200 (含み益 +200 pips)
+Entry: 1.10000, Current Price: 1.10200 (含み益 +200 pips)
 
 // 50%ボタンをクリック
-[Half Close] Position #12345 closed. Closed=0.10, Remaining=0.10
+[Half Close] Position #12345. Closed=0.10, Remaining=0.10
 
 // 実行後の状態
 Position #12345 (BUY EURUSD 0.10)  ← ロットが半分に
-Entry: 1.10000
-Current Price: 1.10200
 → 0.10ロット分の利益が確定し、残り0.10ロットは継続
     </pre>
 
@@ -1230,22 +1263,16 @@ Current Price: 1.10200
 // 実行前の状態
 Position #12345 (BUY EURUSD 0.10)
 Position #12346 (SELL EURUSD 0.05)
-Position #12347 (BUY EURUSD 0.20)
 
 // CLボタンをクリック
 [Close All] Position #12345 closed
 [Close All] Position #12346 closed
-[Close All] Position #12347 closed
-[Close All] Completed: 3 closed, 0 failed
-
-// 実行後の状態
-ポジションなし
+[Close All] Completed: 2 closed, 0 failed
     </pre>
 
     <div class="note">
       <strong>⚠️ 注意事項：</strong>
       CLボタンは確認ダイアログなしで即座に全決済します。誤操作に注意してください。
-      MT5のストラテジーテスターでは、テスターパネルの「Close All」ボタンと同じ動作をします。
     </div>
 
     <h3>7-4. ポジション制御の実践シナリオ</h3>
@@ -1260,17 +1287,16 @@ Position #12347 (BUY EURUSD 0.20)
         → BEボタンをクリック
         → SL: 1.10002 に移動（損益ゼロ確保）
 
-12:00 - 含み益+150pips到達  
+12:00 - 含み益+150pips到達
         → 50%ボタンをクリック
-        → 0.10ロット分を利確（+150pips × 0.10 = +15pips利益確定）
+        → 0.10ロット分を利確
         → 残り0.10ロットは継続
 
 14:00 - 相場が反転の兆し
         → CLボタンをクリック
-        → 残り0.10ロットを全決済（+120pips × 0.10 = +12pips利益確定）
+        → 残り0.10ロットを全決済
 
-結果：トータル +27pips の利益確保に成功
-      Trades today: 1/3（部分決済・全決済はカウントされない）
+結果：Trades today: 1/3（部分決済・全決済はカウントされない）
     </pre>
   </div>
 
@@ -1288,63 +1314,35 @@ Position #12347 (BUY EURUSD 0.20)
       <strong>具体例：</strong><br>
       パラメータ設定：<code>StopLossPips = 30</code>、<code>RiskRewardRatio = 2.0</code><br>
       現在価格：<code>Bid = 1.10000</code>、<code>Ask = 1.10002</code>（スプレッド2pips）<br><br>
-      
+
       <strong>従来のEA（スプレッド未考慮）：</strong><br>
       Buy Entry: 1.10002 (Ask)<br>
       SL: 1.10002 - 0.00030 = 1.09972<br>
-      TP: 1.10002 + 0.00060 = 1.10062<br>
-      → 実際のリスク距離 = Ask - SL = 1.10002 - 1.09972 = <strong>30pips</strong>... ではない！<br>
-      → SL発動はBidで判定されるため、実リスク = 1.10000 - 1.09972 = <strong>28pips</strong><br>
-      → <strong>RRがズレる！</strong><br><br>
-      
-      <strong>v7.00（スプレッド考慮）：</strong><br>
-      Buy Entry: 1.10002 (Ask)<br>
+      → SL発動はBidで判定されるため、実リスク = 28pips → <strong>RRがズレる！</strong><br><br>
+
+      <strong>v9.00（スプレッド考慮）：</strong><br>
       実際のリスク距離 = パラメータSL距離 + スプレッド = 30pips + 2pips = <strong>32pips</strong><br>
-      SL: Bid - 30pips = 1.10000 - 0.00030 = 1.09970<br>
-      TP: Ask + (32pips × 2.0) = 1.10002 + 0.00064 = 1.10066<br>
+      SL: Bid - 30pips = 1.09970<br>
+      TP: Ask + (32pips × 2.0) = 1.10066<br>
       → <strong>正確なRR 2.0を維持！</strong>
     </div>
 
-    <h3>8-2. v7.00の計算ロジック</h3>
+    <h3>8-2. 計算ロジック</h3>
 
     <h4>BUY注文の場合：</h4>
     <pre>
-// エントリー価格
 Entry = Ask
-
-// SL価格（パラメータで設定した距離分だけBidから離す）
 SL = Bid - StopLossPips
-
-// 実際のリスク距離（スプレッド込み）
-実リスク距離 = Entry - SL = Ask - (Bid - StopLossPips)
-            = Ask - Bid + StopLossPips
-            = スプレッド + StopLossPips
-
-// TP距離（実リスク距離 × RR）
-TP距離 = 実リスク距離 × RiskRewardRatio
-
-// TP価格
-TP = Entry + TP距離 = Ask + (実リスク距離 × RiskRewardRatio)
+実リスク距離 = Ask - Bid + StopLossPips（= スプレッド + SL距離）
+TP = Ask + (実リスク距離 × RiskRewardRatio)
     </pre>
 
     <h4>SELL注文の場合：</h4>
     <pre>
-// エントリー価格
 Entry = Bid
-
-// SL価格（パラメータで設定した距離分だけAskから離す）
 SL = Ask + StopLossPips
-
-// 実際のリスク距離（スプレッド込み）
-実リスク距離 = SL - Entry = (Ask + StopLossPips) - Bid
-            = Ask - Bid + StopLossPips
-            = スプレッド + StopLossPips
-
-// TP距離（実リスク距離 × RR）
-TP距離 = 実リスク距離 × RiskRewardRatio
-
-// TP価格
-TP = Entry - TP距離 = Bid - (実リスク距離 × RiskRewardRatio)
+実リスク距離 = Ask - Bid + StopLossPips（= スプレッド + SL距離）
+TP = Bid - (実リスク距離 × RiskRewardRatio)
     </pre>
 
     <h3>8-3. スプレッドが広い銘柄での効果</h3>
@@ -1375,7 +1373,7 @@ TP = Entry - TP距離 = Bid - (実リスク距離 × RiskRewardRatio)
 
     <div class="note">
       <strong>メリット：</strong>
-      v7.00では、スプレッドが広いゴールドや早朝の通貨ペアでも、設定したRRが正確に維持されます。
+      スプレッドが広いゴールドや早朝の通貨ペアでも、設定したRRが正確に維持されます。
       特にゴールドトレーダーにとって、この機能は必須です。
     </div>
   </div>
@@ -1391,7 +1389,6 @@ TP = Entry - TP距離 = Bid - (実リスク距離 × RiskRewardRatio)
       <tr><td>RiskRewardRatio</td><td>1.5〜2.0</td></tr>
       <tr><td>StopLossPips</td><td>20〜30 pips</td></tr>
       <tr><td>EnableAutoRiskPercent</td><td>true（Trial版では1%固定）</td></tr>
-      <tr><td>LockMarketLines</td><td>false</td></tr>
       <tr><td>AllowBetterRR</td><td>true</td></tr>
     </table>
 
@@ -1401,7 +1398,6 @@ TP = Entry - TP距離 = Bid - (実リスク距離 × RiskRewardRatio)
       <tr><td>RiskRewardRatio</td><td>2.0〜3.0</td></tr>
       <tr><td>StopLossDollars</td><td>3.0〜5.0 USD</td></tr>
       <tr><td>EnableAutoRiskPercent</td><td>true（Trial版では1%固定）</td></tr>
-      <tr><td>LockMarketLines</td><td>false</td></tr>
       <tr><td>AllowBetterRR</td><td>true</td></tr>
     </table>
 
@@ -1411,9 +1407,15 @@ TP = Entry - TP距離 = Bid - (実リスク距離 × RiskRewardRatio)
       <tr><td>RiskRewardRatio</td><td>2.0〜4.0</td></tr>
       <tr><td>StopLossPips</td><td>50〜100 pips</td></tr>
       <tr><td>EnableAutoRiskPercent</td><td>true（Trial版では1%固定）</td></tr>
-      <tr><td>LockMarketLines</td><td>true（指定価格まで待つ）</td></tr>
       <tr><td>AllowBetterRR</td><td>true</td></tr>
     </table>
+
+    <div class="note">
+      <strong>v9.00でのライン活用：</strong>
+      スイングトレードではエントリー価格を正確に決めたい場面が多いです。
+      BUYボタンでラインを表示し、SL/TPラインをドラッグして目標価格に合わせてから（FIXEDモード）、
+      EXEボタンで発注することで、精度の高いエントリーが可能です。
+    </div>
 
     <h3>9-2. 実践シナリオ：EURUSDデイトレード</h3>
     <pre>
@@ -1422,45 +1424,34 @@ TP = Entry - TP距離 = Bid - (実リスク距離 × RiskRewardRatio)
 RiskPercent：1.0%（Trial版固定）
 StopLossPips：30 pips
 RiskRewardRatio：2.0
-AllowBetterRR：true
 
 【09:00】チャート分析
 - 4時間足でサポートライン付近
-- 1時間足で反発の兆候
-- BUY検討
+- 1時間足で反発の兆候 → BUY検討
 
 【09:15】エントリー準備
-- BUYボタンをクリック
-- ラベル確認：
-  - SL金額：-10,000円
-  - TP金額：+20,000円
-  - Lot：0.30 / RR：2.00
+- BUYボタンをクリック → Lines: TRACKING
+- ラベル確認：SL: -10,000円 / TP: +20,000円 / Lot:0.30/RR:2.00 (白)
+- SLラインをドラッグして調整 → Lines: FIXED
+  → 情報ラベルが白のまま（RR = 2.00）
 - 想定損失が1%（10,000円）以内 → OK
 
 【09:16】エントリー実行
 - EXEボタンをクリック
-- [Market Execute] Success. Lot=0.30 (Trades today: 1/3)
+- [Market Execute] Success. Lot=0.30
 - Entry: 1.10000, SL: 1.09700, TP: 1.10600
 
 【10:30】含み益+50pips到達
-- 現在価格：1.10500
-- BEボタンをクリック
-- SLが1.10002に移動（損失リスクゼロ）
+- BEボタンをクリック → SL: 1.10002に移動
 
 【12:00】含み益+150pips到達
-- 現在価格：1.11500
-- 50%ボタンをクリック
-- 0.15ロット分を利確（+15,000円確定）
+- 50%ボタンをクリック → 0.15ロット分を利確
 - 残り0.15ロットは継続
 
 【14:00】TP到達
-- 価格が1.10600に到達
-- 残り0.15ロットが自動決済（+9,000円確定）
+- 残り0.15ロットが自動決済
 
-【結果】
-- トレード回数：1/3（まだ2回使える）
-- 利益：+15,000円（50%決済） + +9,000円（TP到達） = +24,000円
-- 実質リスクリワード：24,000円 / 10,000円 = 2.4
+【結果】Trades today: 1/3（まだ2回使える）
     </pre>
 
     <h3>9-3. ベストプラクティス</h3>
@@ -1471,6 +1462,7 @@ AllowBetterRR：true
       <li>日次トレード制限（3回/日）を意識し、チャンスを厳選する</li>
       <li>BEボタンは含み益が出たら積極的に使用する（損失リスクをゼロにする）</li>
       <li>50%ボタンは利益を確保しつつ、さらなる利益を狙う場面で使用する</li>
+      <li>ライン調整後は情報ラベルの色でRRを確認する（赤は要注意）</li>
       <li>スプレッドが広い時間帯（早朝・経済指標発表時）は成行エントリーを避ける</li>
       <li>複数銘柄で運用する場合、各チャートに個別にEAを設置する</li>
     </ul>
@@ -1481,6 +1473,7 @@ AllowBetterRR：true
       <li>BEボタンを押さずに含み益を放置しない（せっかくの機能を活用しよう）</li>
       <li>CLボタンを誤って押さないよう注意する（確認ダイアログなし）</li>
       <li>他のEAと同じMagicNumberを使わない（干渉の原因）</li>
+      <li>情報ラベルが赤の状態（RR 1.0未満）でEXEボタンを押さない</li>
       <li>ラベル表示を確認せずにEXEボタンを押さない</li>
     </ul>
 
@@ -1519,9 +1512,23 @@ AllowBetterRR：true
       制限に達すると、全ボタンがグレーアウトし、新規エントリーができなくなります。
     </div>
 
-    <h3>10-2. ポジション管理関連</h3>
+    <h3>10-2. ライン操作関連（v9.00）</h3>
 
-    <h4>Q4. BEボタンを押してもSLが移動しない</h4>
+    <h4>Q4. ラインをドラッグしたら価格が追随しなくなった</h4>
+    <p><strong>A:</strong> 正常な動作です。v9.00ではラインをクリック/ドラッグした瞬間に自動的にFIXEDモードに移行します。
+    追随モードに戻すには、BUY/SELLボタンを一度押してラインを消し、再度押してください。</p>
+
+    <h4>Q5. 情報ラベルが赤になっている</h4>
+    <p><strong>A:</strong> FIXEDモード中にRRが1.0未満（損失がリスクを超えている状態）です。
+    SL/TPラインを調整してRRを改善してから発注してください。</p>
+
+    <h4>Q6. パネルに「Lines: TRACKING」が表示されない</h4>
+    <p><strong>A:</strong> ラインが表示されていない状態では区切り線（===）が表示されます。
+    BUYまたはSELLボタンを押してラインを表示すると「Lines: TRACKING」が表示されます。</p>
+
+    <h3>10-3. ポジション管理関連</h3>
+
+    <h4>Q7. BEボタンを押してもSLが移動しない</h4>
     <p><strong>A:</strong> 以下の条件を満たしているか確認してください：</p>
     <ul>
       <li>ポジションが含み益状態か？（<code>Profit > 0</code>）</li>
@@ -1530,7 +1537,7 @@ AllowBetterRR：true
       <li>ログに <code>[Breakeven] No positions eligible</code> と表示されているか？</li>
     </ul>
 
-    <h4>Q5. 50%ボタンを押してもポジションが決済されない</h4>
+    <h4>Q8. 50%ボタンを押してもポジションが決済されない</h4>
     <p><strong>A:</strong> 以下の原因が考えられます：</p>
     <ul>
       <li>ポジションのロットが最小ロット（通常0.01）の2倍未満</li>
@@ -1538,9 +1545,9 @@ AllowBetterRR：true
       <li>ログに <code>[Half Close] Position #xxxxx skipped. Lot too small</code> と表示されているか確認</li>
     </ul>
 
-    <h3>10-3. 指値注文関連</h3>
+    <h3>10-4. 指値注文関連</h3>
 
-    <h4>Q6. 指値注文のSL/TPが自動設定されない</h4>
+    <h4>Q9. 指値注文のSL/TPが自動設定されない</h4>
     <p><strong>A:</strong> 以下を確認してください：</p>
     <ul>
       <li>注文のシンボルがEAを設置したチャートと同じか？</li>
@@ -1550,49 +1557,38 @@ AllowBetterRR：true
       <li>ログに <code>Order xxxxx: Initial SL/TP set</code> と表示されているか？</li>
     </ul>
 
-    <h4>Q7. 指値注文が約定後、ロットが変更されている</h4>
-    <p><strong>A:</strong> 正常な動作です。自動リスクON時、以下の流れで最適化されます：</p>
-    <ol>
-      <li>指値注文を手動発注（例：0.05ロット）</li>
-      <li>EAが検出し、SL距離から最適ロット（例：0.08ロット）を計算</li>
-      <li>ロットが異なる場合、注文を削除して再発注（ReplaceOrder）</li>
-      <li>ログに <code>Replaced order xxxxx -> yyyyy</code> と表示される</li>
-    </ol>
+    <h3>10-5. 表示関連</h3>
 
-    <h3>10-4. 表示関連</h3>
-
-    <h4>Q8. ラベルが表示されない</h4>
+    <h4>Q10. ラベルが表示されない</h4>
     <p><strong>A:</strong> 以下を確認してください：</p>
     <ul>
       <li>BUYまたはSELLボタンを押した後、チャートを左右にスクロールしていないか？</li>
-      <li>v7.00ではチャート右端に固定表示されるため、右端を確認してください</li>
+      <li>ラベルはチャート右端（現在バー付近）に固定表示されます</li>
       <li>チャートを右クリック → オブジェクトリスト で <code>RR_EA_Panel_Label_*</code> が存在するか確認</li>
-      <li>LockMarketLines=trueでラインが画面外にある場合、ラベルも見えない可能性がある</li>
     </ul>
 
-    <h4>Q9. 情報パネルが表示されない</h4>
+    <h4>Q11. 情報パネルが表示されない</h4>
     <p><strong>A:</strong> <code>ShowInfoPanel</code> パラメータを確認してください：</p>
     <ul>
       <li><code>ShowInfoPanel = true</code>：パネル表示</li>
-      <li><code>ShowInfoPanel = false</code>：ボタンのみ表示</li>
-      <li>falseの場合は意図的な動作です</li>
+      <li><code>ShowInfoPanel = false</code>：ボタンのみ表示（意図的な動作）</li>
     </ul>
 
-    <h3>10-5. ログメッセージ例</h3>
+    <h3>10-6. ログメッセージ例</h3>
     <pre>
 // 正常動作時
-=== EA v7.00 Trial Version (GlobalVariable Persistent) ===
+=== EA v9.00 Trial Version ===
 Trial version - Risk: 1% fixed, Manual Lot: 0.01 fixed
 Valid until: 2026/03/31
 Daily trade limit: 3 trades per day (Persistent via GlobalVariable)
 [Trial] Loaded trade count: 0/3
-[Market Execute] Success. Lot=0.24 (Trades today: 1/3)
+[Market Execute] Success. Lot=0.24
 Order 123456: Initial SL/TP set
 [Breakeven] Position #12345 moved. New SL=1.10002
+[v8] Line manually adjusted. Tracking stopped. SL=x.xxxxx TP=x.xxxxx
 
 // 日次制限到達時
-[Market Execute] Success. Lot=0.10 (Trades today: 3/3)
-[Trial] Auto SL/TP and Lot adjustment disabled - Daily limit reached
+[Trial] Daily limit reached after trade. 3/3
 [Trial] All buttons disabled - Daily limit reached
 Alert: "Daily trade limit reached (3/3 trades)"
 
@@ -1602,9 +1598,9 @@ Alert: "Daily trade limit reached (3/3 trades)"
 [Half Close] Position #12345 skipped. Lot too small (0.01)
     </pre>
 
-    <h3>10-6. よくある質問</h3>
+    <h3>10-7. よくある質問</h3>
 
-    <h4>Q10. Trial版の期限が切れたらどうなる？</h4>
+    <h4>Q12. Trial版の期限が切れたらどうなる？</h4>
     <p><strong>A:</strong> 2026年3月31日を過ぎると：</p>
     <ul>
       <li>EAは起動時に <code>Trial version expired</code> と表示</li>
@@ -1613,7 +1609,7 @@ Alert: "Daily trade limit reached (3/3 trades)"
       <li>既存ポジションのSL/TP管理も停止</li>
     </ul>
 
-    <h4>Q11. 日次制限に達した後、既存ポジションはどうなる？</h4>
+    <h4>Q13. 日次制限に達した後、既存ポジションはどうなる？</h4>
     <p><strong>A:</strong> 既存ポジションへの影響：</p>
     <ul>
       <li>既に設定済みのSL/TPはそのまま維持される</li>
@@ -1628,8 +1624,8 @@ Alert: "Daily trade limit reached (3/3 trades)"
 
     <div style="text-align: center; padding: 20px 0;">
       <div style="display: inline-block; padding: 20px 30px; background: linear-gradient(135deg, rgba(0, 246, 255, 0.15), rgba(255, 46, 245, 0.15)); border: 2px solid var(--accent-cyan); border-radius: 12px; box-shadow: 0 0 30px rgba(0, 246, 255, 0.5); margin: 20px 0;">
-        <h3 style="margin: 0 0 16px 0; color: var(--accent-cyan); font-size: 1.4rem;">RiskRewardSLTPMaster v7.00 Trial</h3>
-        <a href="https://drive.google.com/file/d/1yqUKHkPZOAIZ8GcrXDw9SdKaHqM4y9VD/view?usp=sharing" target="_blank" style="display: inline-block; padding: 14px 40px; background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple)); color: #000; font-weight: bold; text-decoration: none; border-radius: 8px; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 0.1em; box-shadow: 0 0 20px rgba(0, 246, 255, 0.6); transition: all 0.3s ease;">
+        <h3 style="margin: 0 0 16px 0; color: var(--accent-cyan); font-size: 1.4rem;">RiskRewardSLTPMaster v9.00 Trial</h3>
+        <a href="https://drive.google.com/file/d/17pdntQt42waUw1ejJWyn9zsnCHezA-uN/view?usp=sharing" target="_blank" style="display: inline-block; padding: 14px 40px; background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple)); color: #000; font-weight: bold; text-decoration: none; border-radius: 8px; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 0.1em; box-shadow: 0 0 20px rgba(0, 246, 255, 0.6); transition: all 0.3s ease;">
           📥 Google Driveからダウンロード
         </a>
       </div>
@@ -1657,7 +1653,9 @@ Alert: "Daily trade limit reached (3/3 trades)"
       ✅ Trial版の制限事項を理解した<br>
       ✅ デモ口座で動作確認を行った<br>
       ✅ 日次トレード制限（3回/日）を理解した<br>
-      ✅ 新しいボタン（BE/50%/CL）の使い方を理解した<br>
+      ✅ ボタン（BE/50%/CL）の使い方を理解した<br>
+      ✅ v9.00のライン操作（TRACKING/FIXED）を理解した<br>
+      ✅ 情報ラベルのRR色分け表示を理解した<br>
       ✅ 自分のトレードスタイルに合った設定を決めた<br>
       ✅ リスク管理ルールを明確にした<br>
       ✅ 全て自己責任であることを理解した
@@ -1665,16 +1663,18 @@ Alert: "Daily trade limit reached (3/3 trades)"
 
     <h3>11-1. インストール後の初回起動手順</h3>
     <ol>
-      <li>ダウンロードした <code>RiskRewardSLTPMaster_v7_Trial.ex5</code> を <code>MQL5/Experts</code> フォルダにコピー</li>
+      <li>ダウンロードした <code>RiskRewardSLTPMaster_v9_Trial.ex5</code> を <code>MQL5/Experts</code> フォルダにコピー</li>
       <li>MT5を再起動してEAリストを更新</li>
       <li>デモ口座で最も取引量の多い銘柄（EURUSD等）のチャートに適用</li>
       <li>パラメータは初期値のまま「OK」をクリック</li>
       <li>情報パネルとボタンが表示されることを確認</li>
       <li>パネルに <code>Today: 0/3 trades</code> と表示されることを確認</li>
       <li>BUYボタンを押してラインとラベルが表示されることを確認</li>
-      <li>ラベルの金額・ロット・RRが妥当な範囲内か確認</li>
+      <li>パネルに <code>Lines: TRACKING</code> と表示されることを確認</li>
+      <li>SLラインをドラッグして <code>Lines: FIXED</code> に変わることを確認</li>
+      <li>情報ラベルの色でRR状態が確認できることを確認</li>
       <li>問題なければEXEボタンで試験発注（1回目のトレード）</li>
-      <li>エキスパートログで <code>[Market Execute] Success. Lot=x.xx (Trades today: 1/3)</code> を確認</li>
+      <li>エキスパートログで <code>[Market Execute] Success. Lot=x.xx</code> を確認</li>
       <li>BEボタン・50%ボタン・CLボタンの動作を確認</li>
       <li>十分にテストしてから実運用へ移行</li>
     </ol>
@@ -1690,7 +1690,7 @@ Alert: "Daily trade limit reached (3/3 trades)"
   </div>
 
   <div class="footer">
-    RISKREWARDSLTPMASTER v7.00 TRIAL EDITION // COPYRIGHT 2024 SYA-NON<br>
+    RISKREWARDSLTPMASTER v9.00 TRIAL EDITION // COPYRIGHT 2024 SYA-NON<br>
     <span style="font-size: 0.7rem; color: var(--text-muted); margin-top: 4px; display: inline-block;">
       TRIAL: RISK 1% FIXED / LOT 0.01 FIXED / 3 TRADES/DAY / EXPIRY: 2026.03.31
     </span>
